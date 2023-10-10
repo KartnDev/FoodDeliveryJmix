@@ -1,0 +1,5 @@
+rootProject.name = 'FoodDelivery-all'
+
+includeBuild '../RestaurantSystem'
+includeBuild '../CourierSystem'
+includeBuild '../OrderSystem'
