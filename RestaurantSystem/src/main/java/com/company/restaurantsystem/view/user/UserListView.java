@@ -1,6 +1,6 @@
 package com.company.restaurantsystem.view.user;
 
-import com.company.restaurantsystem.entity.User;
+import com.company.restaurantsystem.entity.AppUser;
 import com.company.restaurantsystem.view.main.MainView;
 import com.vaadin.flow.router.Route;
 import io.jmix.flowui.view.*;
@@ -10,5 +10,5 @@ import io.jmix.flowui.view.*;
 @ViewDescriptor("user-list-view.xml")
 @LookupComponent("usersDataGrid")
 @DialogMode(width = "64em")
-public class UserListView extends StandardListView<User> {
+public class UserListView extends StandardListView<AppUser> {
 }

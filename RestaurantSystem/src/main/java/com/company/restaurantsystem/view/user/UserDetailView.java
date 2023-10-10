@@ -1,6 +1,6 @@
 package com.company.restaurantsystem.view.user;
 
-import com.company.restaurantsystem.entity.User;
+import com.company.restaurantsystem.entity.AppUser;
 import com.company.restaurantsystem.view.main.MainView;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.textfield.PasswordField;
@@ -19,7 +19,7 @@ import java.util.TimeZone;
 @ViewController("User.detail")
 @ViewDescriptor("user-detail-view.xml")
 @EditedEntityContainer("userDc")
-public class UserDetailView extends StandardDetailView<User> {
+public class UserDetailView extends StandardDetailView<AppUser> {
 
     @ViewComponent
     private TypedTextField<String> usernameField;
@@ -43,7 +43,7 @@ public class UserDetailView extends StandardDetailView<User> {
     }
 
     @Subscribe
-    public void onInitEntity(final InitEntityEvent<User> event) {
+    public void onInitEntity(final InitEntityEvent<AppUser> event) {
         usernameField.setReadOnly(false);
         passwordField.setVisible(true);
         confirmPasswordField.setVisible(true);

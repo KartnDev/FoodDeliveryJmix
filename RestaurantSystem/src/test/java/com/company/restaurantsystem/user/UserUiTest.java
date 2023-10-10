@@ -1,7 +1,7 @@
 package com.company.restaurantsystem.user;
 
 import com.company.restaurantsystem.RestaurantSystemApplication;
-import com.company.restaurantsystem.entity.User;
+import com.company.restaurantsystem.entity.AppUser;
 import com.company.restaurantsystem.view.user.UserDetailView;
 import com.company.restaurantsystem.view.user.UserListView;
 import com.vaadin.flow.component.Component;
@@ -71,9 +71,9 @@ public class UserUiTest {
         userListView = UiTestUtils.getCurrentView();
 
         // Check the created user is shown in the table
-        DataGrid<User> usersDataGrid = findComponent(userListView, "usersDataGrid");
+        DataGrid<AppUser> usersDataGrid = findComponent(userListView, "usersDataGrid");
 
-        DataGridItems<User> usersDataGridItems = usersDataGrid.getItems();
+        DataGridItems<AppUser> usersDataGridItems = usersDataGrid.getItems();
         Assertions.assertNotNull(usersDataGridItems);
 
         usersDataGridItems.getItems().stream()
@@ -84,7 +84,7 @@ public class UserUiTest {
 
     @AfterEach
     void tearDown() {
-        dataManager.load(User.class)
+        dataManager.load(AppUser.class)
                 .query("e.username like ?1", "test-user-%")
                 .list()
                 .forEach(u -> dataManager.remove(u));

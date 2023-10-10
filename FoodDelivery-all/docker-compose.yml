@@ -1,0 +1,24 @@
+version: "3.9"
+
+services:
+  sso:
+    image: quay.io/keycloak/keycloak:22.0.4
+    ports:
+      - "8070:8070"
+    environment:
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+    healthcheck:
+      test: curl -f http://sso:8070/health/ready || exit 1
+      interval: 7s
+      timeout: 3s
+      retries: 3
+    entrypoint: "/opt/keycloak/bin/kc.sh start-dev --import-realm --http-port 8070 --health-enabled=true --db=dev-file"
+
+  shared-database:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"

@@ -1,6 +1,6 @@
 package com.company.restaurantsystem.security;
 
-import com.company.restaurantsystem.entity.User;
+import com.company.restaurantsystem.entity.AppUser;
 import io.jmix.securitydata.user.AbstractDatabaseUserRepository;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,15 +10,15 @@ import java.util.Collection;
 
 @Primary
 @Component("UserRepository")
-public class DatabaseUserRepository extends AbstractDatabaseUserRepository<User> {
+public class DatabaseUserRepository extends AbstractDatabaseUserRepository<AppUser> {
 
     @Override
-    protected Class<User> getUserClass() {
-        return User.class;
+    protected Class<AppUser> getUserClass() {
+        return AppUser.class;
     }
 
     @Override
-    protected void initSystemUser(final User systemUser) {
+    protected void initSystemUser(final AppUser systemUser) {
         final Collection<GrantedAuthority> authorities = getGrantedAuthoritiesBuilder()
                 .addResourceRole(FullAccessRole.CODE)
                 .build();
@@ -26,6 +26,6 @@ public class DatabaseUserRepository extends AbstractDatabaseUserRepository<User>
     }
 
     @Override
-    protected void initAnonymousUser(final User anonymousUser) {
+    protected void initAnonymousUser(final AppUser anonymousUser) {
     }
 }

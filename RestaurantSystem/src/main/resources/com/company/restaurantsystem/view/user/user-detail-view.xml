@@ -4,7 +4,7 @@
       focusComponent="form">
     <data>
         <instance id="userDc"
-                  class="com.company.restaurantsystem.entity.User">
+                  class="com.company.restaurantsystem.entity.AppUser">
             <fetchPlan extends="_base"/>
             <loader/>
         </instance>
@@ -20,7 +20,7 @@
         <formLayout id="form" dataContainer="userDc">
             <textField id="usernameField" property="username" readOnly="true"/>
             <passwordField id="passwordField"
-                           label="msg://com.company.restaurantsystem.entity/User.password"
+                           label="msg://AppUser"
                            required="true"
                            visible="false"/>
             <passwordField id="confirmPasswordField"

@@ -1,6 +1,6 @@
 package com.company.restaurantsystem.user;
 
-import com.company.restaurantsystem.entity.User;
+import com.company.restaurantsystem.entity.AppUser;
 import com.company.restaurantsystem.test_support.AuthenticatedAsAdmin;
 import io.jmix.core.DataManager;
 import io.jmix.core.security.UserRepository;
@@ -30,18 +30,18 @@ public class UserTest {
     @Autowired
     UserRepository userRepository;
 
-    User savedUser;
+    AppUser savedUser;
 
     @Test
     void test_saveAndLoad() {
         // Create and save a new User
-        User user = dataManager.create(User.class);
+        AppUser user = dataManager.create(AppUser.class);
         user.setUsername("test-user-" + System.currentTimeMillis());
         user.setPassword(passwordEncoder.encode("test-passwd"));
         savedUser = dataManager.save(user);
 
         // Check the new user can be loaded
-        User loadedUser = dataManager.load(User.class).id(user.getId()).one();
+        AppUser loadedUser = dataManager.load(AppUser.class).id(user.getId()).one();
         assertThat(loadedUser).isEqualTo(user);
 
         // Check the new user is available through UserRepository
