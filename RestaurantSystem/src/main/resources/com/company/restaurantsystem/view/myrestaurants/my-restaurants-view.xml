@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://myRestaurantsView.title">
+    <data>
+        <collection id="restaurantsDc" class="com.company.restaurantsystem.entity.Restaurant">
+            <fetchPlan extends="_base"/>
+            <loader id="restaurantsDl">
+                <query>
+                    <![CDATA[select distinct e from Restaurant e join e.owners v where v = :current_user]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <layout>
+        <vbox id="restaurantsListContainer"/>
+    </layout>
+</view>

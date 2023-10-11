@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://myRestaurantDetailView.title"
+      focusComponent="form">
+    <data>
+        <instance id="restaurantDc"
+                  class="com.company.restaurantsystem.entity.Restaurant">
+            <fetchPlan extends="_base">
+                <property name="menus" fetchPlan="_base">
+                    <property name="items" fetchPlan="_base"/>
+                </property>
+                <property name="foodItems" fetchPlan="_base"/>
+                <property name="owners" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader/>
+            <collection id="menusFoodItemsDc" property="foodItems"/>
+            <collection id="menusDc" property="menus"/>
+        </instance>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
+    <actions>
+        <action id="saveAction" type="detail_saveClose"/>
+        <action id="closeAction" type="detail_close"/>
+        <action id="addMenuItemAction" actionVariant="PRIMARY" icon="PLUS" text="msg:///actions.Add"/>
+    </actions>
+    <layout>
+        <tabSheet id="tabSheet" width="100%">
+            <tab id="detailsTab" label="msg://retaurantDetails">
+                <vbox padding="false" margin="true" width="70%">
+                    <hbox>
+                        <h2 id="restaurantName"/>
+                        <avatar id="restaurantAvatarIcon" />
+                        <fileUploadField id="restaurantAvatarIconUpload" uploadIcon="UPLOAD" uploadText=""/>
+                    </hbox>
+                    <formLayout id="form" dataContainer="restaurantDc">
+                        <textField id="nameField" property="name"/>
+                        <textArea id="descriptionField" property="description"/>
+                    </formLayout>
+                </vbox>
+            </tab>
+
+            <tab id="menusTab" label="msg://menusTab">
+                <vbox padding="false" margin="true" width="70%">
+                    <h2 id="menusTabTitle" text="msg://menusTabTitle"/>
+                    <div id="menusDescription" />
+                    <hbox classNames="buttons-panel">
+                        <button id="addMenuButton" action="menusDataGrid.addMenuAction"/>
+                        <button id="editMenuButton" action="menusDataGrid.editMenuAction"/>
+                        <button id="removeMenuButton" action="menusDataGrid.removeMenuAction"/>
+                    </hbox>
+                    <dataGrid id="menusDataGrid" dataContainer="menusDc">
+                        <columns>
+                            <column property="name"/>
+                        </columns>
+                        <actions>
+                            <action id="addMenuAction" actionVariant="PRIMARY" icon="PLUS" text="msg:///actions.Add"/>
+                            <action id="editMenuAction" icon="PENCIL" text="msg:///actions.Edit"/>
+                            <action id="removeMenuAction" actionVariant="DANGER" icon="TRASH" text="msg:///actions.Remove"/>
+                        </actions>
+                    </dataGrid>
+                </vbox>
+            </tab>
+
+            <tab id="menusItemsTab" label="msg://menusItemsTab">
+                <vbox padding="false" margin="true" width="AUTO" height="AUTO">
+                    <hbox width="100%" padding="false" margin="false">
+                        <h2 id="menusItemsTabTitle" text="msg://menusItemsTabTitle"/>
+                        <button id="addMenuItemsButton" action="addMenuItemAction"/>
+                    </hbox>
+                    <div id="foodDescription"/>
+                    <div id="menusItemsListContainer" width="100%" height="AUTO"/>
+                </vbox>
+            </tab>
+        </tabSheet>
+        <hbox id="detailActions">
+            <button id="saveAndCloseBtn" action="saveAction"/>
+            <button id="closeBtn" action="closeAction"/>
+        </hbox>
+    </layout>
+</view>

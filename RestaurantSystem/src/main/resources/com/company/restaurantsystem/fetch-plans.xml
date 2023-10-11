@@ -1,0 +1,6 @@
+<fetchPlans xmlns="http://jmix.io/schema/core/fetch-plans">
+    <fetchPlan entity="RestaurantMenu" name="restaurantMenu-with-items-fetch-plan" extends="_base">
+        <property name="items" fetchPlan="_base"/>
+        <property name="restaurant" fetchPlan="_base"/>
+    </fetchPlan>
+</fetchPlans>

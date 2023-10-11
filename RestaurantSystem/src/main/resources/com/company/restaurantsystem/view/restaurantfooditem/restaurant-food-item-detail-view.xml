@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://restaurantFoodItemDetailView.title"
+      focusComponent="form">
+    <data>
+        <instance id="restaurantFoodItemDc"
+                  class="com.company.restaurantsystem.entity.RestaurantFoodItem">
+            <fetchPlan extends="_base"/>
+            <loader/>
+        </instance>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
+    <actions>
+        <action id="saveAction" type="detail_saveClose"/>
+        <action id="closeAction" type="detail_close"/>
+    </actions>
+    <layout>
+        <hbox>
+            <h2 id="itemName"/>
+            <avatar id="itemAvatarIcon" />
+            <fileUploadField id="itemAvatarIconUpload" uploadIcon="UPLOAD" uploadText=""/>
+        </hbox>
+        <formLayout id="form" dataContainer="restaurantFoodItemDc">
+            <textField id="nameField" property="name"/>
+            <textField id="descriptionField" property="description"/>
+            <textField id="priceField" property="price"/>
+        </formLayout>
+        <hbox id="detailActions">
+            <button id="saveAndCloseBtn" action="saveAction"/>
+            <button id="closeBtn" action="closeAction"/>
+        </hbox>
+    </layout>
+</view>

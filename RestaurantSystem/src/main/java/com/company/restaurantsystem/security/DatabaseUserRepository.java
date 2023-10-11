@@ -1,6 +1,6 @@
 package com.company.restaurantsystem.security;
 
-import com.company.restaurantsystem.entity.AppUser;
+import com.company.useroidcplagin.entity.AppUser;
 import io.jmix.securitydata.user.AbstractDatabaseUserRepository;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.GrantedAuthority;

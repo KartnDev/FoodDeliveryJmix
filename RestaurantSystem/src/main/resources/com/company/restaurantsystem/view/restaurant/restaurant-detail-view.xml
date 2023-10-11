@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://restaurantDetailView.title"
+      focusComponent="form">
+    <data>
+        <instance id="restaurantDc"
+                  class="com.company.restaurantsystem.entity.Restaurant">
+            <fetchPlan extends="_base">
+                <property name="owners" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader/>
+        </instance>
+        <collection id="usersDc" class="com.company.useroidcplagin.entity.AppUser">
+            <fetchPlan extends="_base"/>
+            <loader>
+                <query>
+                    <![CDATA[select e from AppUser e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
+    <actions>
+        <action id="saveAction" type="detail_saveClose"/>
+        <action id="closeAction" type="detail_close"/>
+    </actions>
+    <layout>
+        <formLayout id="form" dataContainer="restaurantDc">
+            <textField id="nameField" property="name"/>
+            <fileUploadField id="iconField" label="msg://com.company.restaurantsystem.entity/Restaurant.icon" dropAllowed="true"/>
+            <textArea id="descriptionField" property="description"/>
+            <multiSelectComboBoxPicker id="ownersPickerField" property="owners" itemsContainer="usersDc" >
+                <actions>
+                    <action id="entity_lookup" type="entity_lookup"/>
+                    <action id="entity_clear" type="entity_clear"/>
+                </actions>
+            </multiSelectComboBoxPicker>
+        </formLayout>
+        <hbox id="detailActions">
+            <button id="saveAndCloseBtn" action="saveAction"/>
+            <button id="closeBtn" action="closeAction"/>
+        </hbox>
+    </layout>
+</view>

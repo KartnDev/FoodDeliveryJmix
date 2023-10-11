@@ -1,7 +1,7 @@
 package com.company.restaurantsystem.user;
 
-import com.company.restaurantsystem.entity.AppUser;
 import com.company.restaurantsystem.test_support.AuthenticatedAsAdmin;
+import com.company.useroidcplagin.entity.AppUser;
 import io.jmix.core.DataManager;
 import io.jmix.core.security.UserRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @SpringBootTest
 @ExtendWith(AuthenticatedAsAdmin.class)
-public class UserTest {
+class UserTest {
 
     @Autowired
     DataManager dataManager;

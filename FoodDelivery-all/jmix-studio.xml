@@ -2,6 +2,19 @@
 <project version="4">
   <component name="JmixDataStoreSettingsManager">
     <moduleSettings>
+      <entry key="UserOidcPlagin-addon.useroidcplagin.main">
+        <ModuleSettings>
+          <option name="dataStoreOptionsV2">
+            <map>
+              <entry key="main">
+                <value>
+                  <DataStoreSettingsV2 />
+                </value>
+              </entry>
+            </map>
+          </option>
+        </ModuleSettings>
+      </entry>
       <entry key="com.company.CourierSystem.main">
         <ModuleSettings>
           <option name="dataStoreOptionsV2">
@@ -46,9 +59,92 @@
           </option>
         </ModuleSettings>
       </entry>
+      <entry key="common-api-addon.common-api.main">
+        <ModuleSettings>
+          <option name="dataStoreOptionsV2">
+            <map>
+              <entry key="main">
+                <value>
+                  <DataStoreSettingsV2 />
+                </value>
+              </entry>
+            </map>
+          </option>
+        </ModuleSettings>
+      </entry>
+      <entry key="restaurant-api-addon.restaurant-api.main">
+        <ModuleSettings>
+          <option name="dataStoreOptionsV2">
+            <map>
+              <entry key="main">
+                <value>
+                  <DataStoreSettingsV2 />
+                </value>
+              </entry>
+            </map>
+          </option>
+        </ModuleSettings>
+      </entry>
     </moduleSettings>
   </component>
+  <component name="JmixDatabaseMigrationSettings">
+    <database-infos>
+      <database-info>
+        <dbms-id>mysql</dbms-id>
+        <mapping-types>
+          <mapping-type>
+            <java-class>java.time.OffsetDateTime</java-class>
+            <sql-type>DATETIME</sql-type>
+          </mapping-type>
+        </mapping-types>
+      </database-info>
+      <database-info>
+        <dbms-id>postgres</dbms-id>
+        <mapping-types>
+          <mapping-type>
+            <java-class>java.time.OffsetDateTime</java-class>
+            <sql-type>timestamp with time zone</sql-type>
+          </mapping-type>
+          <mapping-type>
+            <java-class>byte[]</java-class>
+            <sql-type>bytea</sql-type>
+          </mapping-type>
+          <mapping-type sql-type-parameter="Nothing">
+            <java-class>java.util.List&lt;com.company.restaurantsystem.model.Ingredient&gt;</java-class>
+            <sql-type>jsonb</sql-type>
+          </mapping-type>
+        </mapping-types>
+      </database-info>
+      <database-info>
+        <dbms-id>mssql</dbms-id>
+        <mapping-types>
+          <mapping-type>
+            <java-class>java.time.OffsetDateTime</java-class>
+            <sql-type>datetimeoffset</sql-type>
+          </mapping-type>
+          <mapping-type>
+            <java-class>byte[]</java-class>
+            <sql-type>varbinary(max)</sql-type>
+          </mapping-type>
+        </mapping-types>
+      </database-info>
+      <database-info>
+        <dbms-id>oracle</dbms-id>
+        <mapping-types>
+          <mapping-type>
+            <java-class>java.util.UUID</java-class>
+            <sql-type>varchar2(32)</sql-type>
+          </mapping-type>
+        </mapping-types>
+      </database-info>
+    </database-infos>
+  </component>
+  <component name="JmixLiquibaseChangesConfig">
+    <exclude-change idName="restaurant#available_ingredient_options" tagName="dropColumn" />
+    <exclude-change idName="restaurant_menu_item#available_ingredient_options" tagName="dropColumn" />
+  </component>
   <component name="JmixPluginProjectSettings">
+    <option name="isHotDeploy" value="false" />
     <option name="savedDbProperties">
       <list>
         <SavedDbProperties>
