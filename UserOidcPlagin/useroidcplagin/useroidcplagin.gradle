@@ -6,8 +6,10 @@ dependencies {
     implementation 'io.jmix.flowui:jmix-flowui-starter'
     implementation 'io.jmix.flowui:jmix-flowui-themes'
     implementation 'io.jmix.flowui:jmix-flowui-kit'
+    implementation 'io.jmix.security:jmix-security-data'
 
     api 'io.jmix.oidc:jmix-oidc-starter'
+    api 'org.keycloak:keycloak-spring-security-adapter:22.0.4'
 
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'

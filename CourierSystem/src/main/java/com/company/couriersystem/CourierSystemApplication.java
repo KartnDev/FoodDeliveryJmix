@@ -4,7 +4,12 @@ import com.google.common.base.Strings;
 import com.vaadin.flow.component.page.AppShellConfigurator;
 import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.server.PWA;
+import com.vaadin.flow.spring.annotation.UIScope;
 import com.vaadin.flow.theme.Theme;
+import jakarta.servlet.http.HttpServletRequest;
+import org.keycloak.adapters.springsecurity.account.SimpleKeycloakAccount;
+import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
+import org.keycloak.representations.AccessToken;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -14,8 +19,13 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Scope;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Environment;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.sql.DataSource;
 
@@ -52,5 +62,10 @@ public class CourierSystemApplication implements AppShellConfigurator {
                 + "http://localhost:"
                 + environment.getProperty("local.server.port")
                 + Strings.nullToEmpty(environment.getProperty("server.servlet.context-path")));
+    }
+
+    @Bean
+    public RestTemplate defaultRestTemplate() {
+        return new RestTemplate();
     }
 }

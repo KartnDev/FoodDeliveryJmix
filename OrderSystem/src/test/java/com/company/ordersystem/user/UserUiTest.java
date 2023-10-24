@@ -1,9 +1,6 @@
 package com.company.ordersystem.user;
 
 import com.company.ordersystem.OrderSystemApplication;
-import com.company.ordersystem.entity.User;
-import com.company.ordersystem.view.user.UserDetailView;
-import com.company.ordersystem.view.user.UserListView;
 import com.vaadin.flow.component.Component;
 import io.jmix.core.DataManager;
 import io.jmix.flowui.ViewNavigators;

@@ -1,9 +1,6 @@
 package com.company.couriersystem.user;
 
 import com.company.couriersystem.CourierSystemApplication;
-import com.company.couriersystem.entity.User;
-import com.company.couriersystem.view.user.UserDetailView;
-import com.company.couriersystem.view.user.UserListView;
 import com.vaadin.flow.component.Component;
 import io.jmix.core.DataManager;
 import io.jmix.flowui.ViewNavigators;

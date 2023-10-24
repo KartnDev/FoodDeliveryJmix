@@ -1,6 +1,5 @@
 package com.company.ordersystem.user;
 
-import com.company.ordersystem.entity.User;
 import com.company.ordersystem.test_support.AuthenticatedAsAdmin;
 import io.jmix.core.DataManager;
 import io.jmix.core.security.UserRepository;

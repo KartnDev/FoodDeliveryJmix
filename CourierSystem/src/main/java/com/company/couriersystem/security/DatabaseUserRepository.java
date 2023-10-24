@@ -1,6 +1,5 @@
 package com.company.couriersystem.security;
 
-import com.company.couriersystem.entity.User;
 import io.jmix.securitydata.user.AbstractDatabaseUserRepository;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.GrantedAuthority;

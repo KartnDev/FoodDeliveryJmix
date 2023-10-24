@@ -29,7 +29,9 @@ public class RestaurantMenuController {
     private final FetchPlans fetchPlans;
     private final DataManager dataManager;
     private final AttachmentService attachmentService;
-    @GetMapping("/restaurant/{restaurantId}/menus")
+
+
+    @GetMapping("/restaurants/{restaurantId}/menus")
     public List<RestaurantMenuDTO> listRestaurants(@PathVariable Long restaurantId) {
         var fetchPlan = fetchPlans.builder(RestaurantMenu.class)
                 .addFetchPlan("restaurantMenu-with-items-fetch-plan")

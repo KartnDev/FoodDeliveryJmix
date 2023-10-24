@@ -1,6 +1,5 @@
 package com.company.couriersystem.user;
 
-import com.company.couriersystem.entity.User;
 import com.company.couriersystem.test_support.AuthenticatedAsAdmin;
 import io.jmix.core.DataManager;
 import io.jmix.core.security.UserRepository;
