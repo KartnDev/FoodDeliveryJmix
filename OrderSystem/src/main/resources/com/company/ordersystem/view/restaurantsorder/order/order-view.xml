@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://orderView.title">
+    <data>
+        <collection id="menusDc" class="com.company.restaurantapi.model.RestaurantMenuDTO">
+            <loader id="menusDl"/>
+        </collection>
+        <instance id="draftOrderDc" class="com.company.ordersystem.entity.DraftOrder"/>
+    </data>
+    <layout>
+        <split splitterPosition="50" orientation="HORIZONTAL" width="100%">
+            <vbox id="restaurantMenuDetailTab" width="100%">
+                <tabSheet id="menuTabSheetContainer" width="100%"/>
+            </vbox>
+            <vbox id="orderDetailTab" width="100%">
+                <div id="orderContainer"/>
+            </vbox>
+        </split>
+    </layout>
+</view>

@@ -1,6 +1,5 @@
 package com.company.restaurantsystem.api.rest.v1;
 
-import com.company.restaurantapi.entity.RestaurantDTO;
 import org.apache.http.client.utils.URIBuilder;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -12,9 +11,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class RestaurantControllerIntegrationTest {
 

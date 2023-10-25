@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://restaurantsOrderView.title">
+    <data>
+        <collection id="restaurantsDc" class="com.company.restaurantapi.model.RestaurantDTO">
+            <loader id="restaurantsDl" />
+        </collection>
+    </data>
+    <layout>
+        <vbox margin="false" padding="false" id="restaurantsListContainer" width="100%"/>
+    </layout>
+</view>

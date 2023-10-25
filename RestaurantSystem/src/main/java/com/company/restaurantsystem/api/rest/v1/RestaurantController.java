@@ -1,13 +1,11 @@
 package com.company.restaurantsystem.api.rest.v1;
 
-import com.company.restaurantapi.entity.RestaurantDTO;
+import com.company.restaurantapi.model.RestaurantDTO;
 import com.company.restaurantsystem.repository.RestaurantRepository;
 import com.company.restaurantsystem.service.AttachmentService;
 import io.jmix.core.DataManager;
 import lombok.AllArgsConstructor;
-import org.checkerframework.common.reflection.qual.GetMethod;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

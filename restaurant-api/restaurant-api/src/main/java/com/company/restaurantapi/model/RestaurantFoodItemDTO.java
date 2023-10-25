@@ -1,4 +1,4 @@
-package com.company.restaurantapi.entity;
+package com.company.restaurantapi.model;
 
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
 import io.jmix.core.entity.annotation.JmixId;
@@ -7,19 +7,27 @@ import io.jmix.core.metamodel.annotation.JmixEntity;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
 import java.util.UUID;
 
 @Getter
 @Setter
-@JmixEntity(name = "rstaddn_RestaurantMenuDTO")
-public class RestaurantMenuDTO {
+@JmixEntity(name = "rstaddn_RestaurantFoodItemDTO")
+public class RestaurantFoodItemDTO implements HasIcon {
     @JmixGeneratedValue
     @JmixId
-    private Long id;
+    private UUID id;
 
     @InstanceName
     private String name;
 
-    private List<RestaurantFoodItemDTO> items;
+    private byte[] icon;
+
+    private Integer price;
+
+    private String description;
+
+    @Override
+    public String getAttachmentName() {
+        return name + "_item_icon.png";
+    }
 }

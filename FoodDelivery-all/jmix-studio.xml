@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="IgnoredChangelogIncludeConfig">
+    <datastore-include-infos>
+      <datastore-include-info datastore-name="main" />
+    </datastore-include-infos>
+  </component>
   <component name="JmixDataStoreSettingsManager">
     <moduleSettings>
       <entry key="UserOidcPlagin-addon.useroidcplagin.main">
@@ -21,7 +26,12 @@
             <map>
               <entry key="main">
                 <value>
-                  <DataStoreSettingsV2 />
+                  <DataStoreSettingsV2>
+                    <option name="generateDdlType" value="CREATE_AND_UPDATE" />
+                    <option name="supportedTypes">
+                      <option value="postgres" />
+                    </option>
+                  </DataStoreSettingsV2>
                 </value>
               </entry>
             </map>
@@ -34,7 +44,12 @@
             <map>
               <entry key="main">
                 <value>
-                  <DataStoreSettingsV2 />
+                  <DataStoreSettingsV2>
+                    <option name="generateDdlType" value="CREATE_AND_UPDATE" />
+                    <option name="supportedTypes">
+                      <option value="postgres" />
+                    </option>
+                  </DataStoreSettingsV2>
                 </value>
               </entry>
             </map>
@@ -148,11 +163,11 @@
     <option name="savedDbProperties">
       <list>
         <SavedDbProperties>
-          <option name="databaseName" value="restaurantsystem" />
+          <option name="databaseName" value="couriersystem" />
           <option name="dbType" value="hsqlfile" />
           <option name="dbmsVersion" />
           <option name="host" value=".jmix/hsqldb" />
-          <option name="url" value="jdbc:hsqldb:file:.jmix/hsqldb/restaurantsystem" />
+          <option name="url" value="jdbc:hsqldb:file:.jmix/hsqldb/couriersystem" />
           <option name="user" value="sa" />
         </SavedDbProperties>
       </list>

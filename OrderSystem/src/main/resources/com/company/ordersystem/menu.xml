@@ -2,6 +2,8 @@
 <menu-config xmlns="http://jmix.io/schema/flowui/menu">
 
     <menu id="application" title="msg://com.company.ordersystem/menu.application.title" opened="true">
+        <item view="RestaurantsOrderView"
+              title="msg://com.company.ordersystem.view.restaurantsorder/restaurantsOrderView.title"/>
     </menu>
 
 </menu-config>

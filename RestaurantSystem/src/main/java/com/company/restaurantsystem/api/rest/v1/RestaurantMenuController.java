@@ -1,8 +1,7 @@
 package com.company.restaurantsystem.api.rest.v1;
 
-import com.company.restaurantapi.entity.RestaurantDTO;
-import com.company.restaurantapi.entity.RestaurantFoodItemDTO;
-import com.company.restaurantapi.entity.RestaurantMenuDTO;
+import com.company.restaurantapi.model.RestaurantFoodItemDTO;
+import com.company.restaurantapi.model.RestaurantMenuDTO;
 import com.company.restaurantsystem.entity.RestaurantFoodItem;
 import com.company.restaurantsystem.entity.RestaurantMenu;
 import com.company.restaurantsystem.repository.RestaurantMenuRepository;
