@@ -1,0 +1,7 @@
+<fetchPlans xmlns="http://jmix.io/schema/core/fetch-plans">
+    <fetchPlan entity="Order" name="order-fetch-plan" extends="_base">
+        <property name="orderItems" fetchPlan="_base">
+            <property name="item" fetchPlan="_base"/>
+        </property>
+    </fetchPlan>
+</fetchPlans>

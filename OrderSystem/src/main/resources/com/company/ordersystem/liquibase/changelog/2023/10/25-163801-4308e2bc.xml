@@ -7,7 +7,7 @@
         objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
     <changeSet id="1" author="OrderSystem">
         <createTable tableName="DRAFT_ORDER">
-            <column name="ID" type="UUID">
+            <column name="ID" type="java.lang.Long">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="PK_DRAFT_ORDER"/>
             </column>
             <column name="BELONGS_TO_USER_ID" type="UUID"/>
@@ -21,7 +21,7 @@
             <column name="ITEM_ID" type="UUID"/>
             <column name="COUNT_" type="INT"/>
             <column name="BELONGS_TO_USER_ID" type="UUID"/>
-            <column name="DRAFT_ORDER_ID" type="UUID"/>
+            <column name="DRAFT_ORDER_ID" type="java.lang.Long"/>
         </createTable>
     </changeSet>
     <changeSet id="3" author="OrderSystem">
@@ -33,7 +33,7 @@
             <column name="ICON" type="${byte[].type}"/>
             <column name="DESCRIPTION" type="VARCHAR(255)"/>
             <column name="BELONGS_TO_USER_ID" type="UUID"/>
-            <column name="PRICE" type="VARCHAR(255)"/>
+            <column name="PRICE" type="INT"/>
         </createTable>
     </changeSet>
     <changeSet id="4" author="OrderSystem">

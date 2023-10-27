@@ -1,20 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <view xmlns="http://jmix.io/schema/flowui/view"
       title="msg://orderView.title">
+    <actions>
+        <action id="approveOrder" text="msg://approveOrder" icon="CHECK" actionVariant="PRIMARY"/>
+        <action id="cancelOrder" text="msg://cancelOrder" icon="BAN" actionVariant="DANGER"/>
+    </actions>
     <data>
         <collection id="menusDc" class="com.company.restaurantapi.model.RestaurantMenuDTO">
             <loader id="menusDl"/>
         </collection>
-        <instance id="draftOrderDc" class="com.company.ordersystem.entity.DraftOrder"/>
+        <instance id="draftOrderDc" class="com.company.ordersystem.entity.Order"/>
+        <instance id="restaurantDc" class="com.company.restaurantapi.model.RestaurantDTO">
+            <loader id="restaurantDl"/>
+        </instance>
     </data>
     <layout>
-        <split splitterPosition="50" orientation="HORIZONTAL" width="100%">
-            <vbox id="restaurantMenuDetailTab" width="100%">
-                <tabSheet id="menuTabSheetContainer" width="100%"/>
-            </vbox>
-            <vbox id="orderDetailTab" width="100%">
-                <div id="orderContainer"/>
-            </vbox>
-        </split>
+        <vbox id="readonlyContent" padding="false" margin="false" width="100%" visible="false"/>
+        <div id="content" width="100%">
+            <split id="split" splitterPosition="50" orientation="HORIZONTAL" width="100%">
+                <vbox id="restaurantMenuDetailTab" width="100%">
+                    <tabSheet id="menuTabSheetContainer" width="100%"/>
+                </vbox>
+                <vbox id="orderDetailTab" width="100%">
+                    <h3 id="orderTitle" text="msg://Order"/>
+                    <div id="orderContainer" width="100%"/>
+                </vbox>
+            </split>
+            <hbox id="detailsActions">
+                <button id="approveButton" action="approveOrder"/>
+                <button id="cancelButton" action="cancelOrder"/>
+            </hbox>
+        </div>
     </layout>
 </view>

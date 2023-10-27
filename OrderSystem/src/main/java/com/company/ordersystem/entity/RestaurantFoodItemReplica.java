@@ -22,6 +22,9 @@ public class RestaurantFoodItemReplica implements HasIcon {
     @Id
     private UUID id;
 
+    @Column(name = "SOURCE_ID")
+    private UUID sourceId;
+
     @InstanceName
     @Column(name = "NAME")
     private String name;
@@ -37,7 +40,7 @@ public class RestaurantFoodItemReplica implements HasIcon {
     private AppUser belongsToUser;
 
     @Column(name = "PRICE")
-    private String price;
+    private Integer price;
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "item")
     private FoodItemCountedEntity foodItemCountedEntity;

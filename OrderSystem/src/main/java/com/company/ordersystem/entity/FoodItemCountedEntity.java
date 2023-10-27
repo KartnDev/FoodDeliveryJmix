@@ -1,5 +1,6 @@
 package com.company.ordersystem.entity;
 
+import com.company.restaurantapi.model.HasIcon;
 import com.company.useroidcplagin.entity.AppUser;
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
 import io.jmix.core.metamodel.annotation.InstanceName;
@@ -18,7 +19,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-public class FoodItemCountedEntity {
+public class FoodItemCountedEntity implements HasIcon {
 
     @InstanceName
     @JmixGeneratedValue
@@ -39,6 +40,20 @@ public class FoodItemCountedEntity {
 
     @JoinColumn(name = "DRAFT_ORDER_ID")
     @ManyToOne(fetch = FetchType.LAZY)
-    private DraftOrder draftOrder;
+    private Order order;
 
+    @Override
+    public byte[] getIcon() {
+        return item.getIcon();
+    }
+
+    @Override
+    public void setIcon(byte[] icon) {
+        item.setIcon(icon);
+    }
+
+    @Override
+    public String getAttachmentName() {
+        return item.getAttachmentName();
+    }
 }

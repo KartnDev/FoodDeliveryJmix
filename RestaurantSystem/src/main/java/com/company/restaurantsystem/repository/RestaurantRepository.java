@@ -5,5 +5,5 @@ import io.jmix.core.repository.JmixDataRepository;
 
 import java.util.UUID;
 
-public interface RestaurantRepository extends JmixDataRepository<Restaurant, UUID> {
+public interface RestaurantRepository extends JmixDataRepository<Restaurant, Long> {
 }

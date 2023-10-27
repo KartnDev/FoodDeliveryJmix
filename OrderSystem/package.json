@@ -66,6 +66,7 @@
       "@vaadin/vertical-layout": "24.0.8",
       "@vaadin/virtual-list": "24.0.8",
       "ace-builds": "1.18.0",
+      "bpmn-js": "12.1.0",
       "construct-style-sheets-polyfill": "3.1.0",
       "date-fns": "2.29.3",
       "lit": "2.6.1"
@@ -86,7 +87,7 @@
       "workbox-core": "6.5.4",
       "workbox-precaching": "6.5.4"
     },
-    "hash": "3e6ecced448cce6240dac5976113a0d7f604337c7bc0b089a77da613ff04d89a"
+    "hash": "811c852b7698810209c6571f2ee34536d8d5131e5431de044bc59abbf6e98254"
   },
   "dependencies": {
     "@polymer/polymer": "3.5.1",
@@ -165,6 +166,7 @@
     "@vaadin/vertical-layout": "24.0.8",
     "@vaadin/virtual-list": "24.0.8",
     "ace-builds": "1.18.0",
+    "bpmn-js": "12.1.0",
     "construct-style-sheets-polyfill": "3.1.0",
     "date-fns": "2.29.3",
     "lit": "2.6.1"
@@ -264,6 +266,7 @@
     "@polymer/polymer": "$@polymer/polymer",
     "date-fns": "$date-fns",
     "ace-builds": "$ace-builds",
-    "@vaadin/overlay": "$@vaadin/overlay"
+    "@vaadin/overlay": "$@vaadin/overlay",
+    "bpmn-js": "$bpmn-js"
   }
 }

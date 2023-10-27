@@ -1,5 +1,6 @@
 package com.company.ordersystem.client;
 
+import com.company.orderapi.model.OrderDTO;
 import com.company.restaurantapi.model.RestaurantDTO;
 import com.company.restaurantapi.model.RestaurantMenuDTO;
 import com.company.useroidcplagin.holder.OidcTokenHolder;
@@ -39,9 +40,39 @@ public class RestaurantClient {
         return getApi(url, HttpMethod.GET, new ParameterizedTypeReference<List<RestaurantDTO>>() {});
     }
 
+    public RestaurantDTO getRestaurantById(Long restaurantId) {
+        String url = MessageFormat.format("{0}/api/v1/restaurants/{1}", restaurantUrl, restaurantId);
+        return getApi(url, HttpMethod.GET, new ParameterizedTypeReference<RestaurantDTO>() {});
+    }
+
     public List<RestaurantMenuDTO> listRestaurantMenus(Long restaurantId) {
         String url = MessageFormat.format("{0}/api/v1/restaurants/{1}/menus", restaurantUrl, restaurantId);
         return getApi(url, HttpMethod.GET, new ParameterizedTypeReference<List<RestaurantMenuDTO>>() {});
+    }
+
+    public void publishRestaurantCookRequest(Long restaurantId, OrderDTO orderDTO) {
+        String url = MessageFormat.format("{0}/api/v1/restaurants/{1}/cook", restaurantUrl, restaurantId);
+        final RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("Authorization", MessageFormat.format("Bearer {0}", oidcTokenHolder.getCurrentUserToken()));
+
+        final RequestEntity<OrderDTO> requestEntity;
+        try {
+            requestEntity = new RequestEntity<>(orderDTO, headers, HttpMethod.GET, new URI(url));
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+        final ResponseEntity<String> response = restTemplate.exchange(
+                url,
+                HttpMethod.POST,
+                requestEntity,
+                String.class);
+        if(response.getStatusCode().isError()) {
+            log.error("Error code found when requesting " + url + " with code " + response.getStatusCode().value());
+            throw new RuntimeException();
+        }
     }
 
     public <T> T getApi(final String path, final HttpMethod method, final ParameterizedTypeReference<T> parameterizedTypeReference) {
