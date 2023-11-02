@@ -4,8 +4,6 @@ import io.jmix.core.entity.annotation.JmixGeneratedValue;
 import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.List;
 import java.util.UUID;
@@ -15,8 +13,6 @@ import java.util.UUID;
         @Index(name = "IDX_COOK_ORDER_REQUEST_RESTAURANT", columnList = "RESTAURANT_ID")
 })
 @Entity
-@Getter
-@Setter
 public class CookOrderRequest {
     @JmixGeneratedValue
     @Column(name = "ID", nullable = false)
@@ -30,11 +26,50 @@ public class CookOrderRequest {
     @Column(name = "IS_DONE")
     private Boolean isDone;
 
-    @OneToMany(mappedBy = "cookRequestDTO")
+    @OneToMany(mappedBy = "cookOrderRequest")
     private List<CookFoodItemEntity> cookingItems;
 
     @JoinColumn(name = "RESTAURANT_ID")
     @OneToOne(fetch = FetchType.LAZY)
     private Restaurant restaurant;
 
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public Long getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
+    }
+
+    public Boolean getIsDone() {
+        return isDone;
+    }
+
+    public void setIsDone(Boolean done) {
+        isDone = done;
+    }
+
+    public List<CookFoodItemEntity> getCookingItems() {
+        return cookingItems;
+    }
+
+    public void setCookingItems(List<CookFoodItemEntity> cookingItems) {
+        this.cookingItems = cookingItems;
+    }
+
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
+    }
 }

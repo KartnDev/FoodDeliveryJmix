@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://myCurrentDelivery.title"
+      focusComponent="form">
+    <data>
+        <instance id="requestCourierEntityDc"
+                  class="com.company.couriersystem.entity.RequestCourierEntity">
+            <fetchPlan extends="_base">
+                <property name="assingeeCourier" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader id="requestCourierEntityDl">
+                <query>
+                    <![CDATA[select o from RequestCourierEntity o where o.assingeeCourier = :currentUser]]>
+                </query>
+            </loader>
+        </instance>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
+    <actions>
+        <action id="saveAction" type="view_close"/>
+        <action id="closeAction" type="view_close"/>
+    </actions>
+    <layout>
+        <formLayout id="form" dataContainer="requestCourierEntityDc">
+            <textField id="restaurantNameField" property="restaurantName" readOnly="true"/>
+            <textField id="restaurantIdField" property="restaurantId" readOnly="true"/>
+        </formLayout>
+        <div id="ticketContainer"/>
+        <hbox id="detailActions">
+            <button id="saveAndCloseBtn" action="saveAction"/>
+            <button id="closeBtn" action="closeAction"/>
+        </hbox>
+    </layout>
+</view>

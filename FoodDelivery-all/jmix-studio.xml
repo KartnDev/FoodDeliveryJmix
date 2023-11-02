@@ -87,6 +87,19 @@
           </option>
         </ModuleSettings>
       </entry>
+      <entry key="order-api-addon.order-api.main">
+        <ModuleSettings>
+          <option name="dataStoreOptionsV2">
+            <map>
+              <entry key="main">
+                <value>
+                  <DataStoreSettingsV2 />
+                </value>
+              </entry>
+            </map>
+          </option>
+        </ModuleSettings>
+      </entry>
       <entry key="restaurant-api-addon.restaurant-api.main">
         <ModuleSettings>
           <option name="dataStoreOptionsV2">
@@ -153,10 +166,6 @@
         </mapping-types>
       </database-info>
     </database-infos>
-  </component>
-  <component name="JmixLiquibaseChangesConfig">
-    <exclude-change idName="restaurant#available_ingredient_options" tagName="dropColumn" />
-    <exclude-change idName="restaurant_menu_item#available_ingredient_options" tagName="dropColumn" />
   </component>
   <component name="JmixPluginProjectSettings">
     <option name="isHotDeploy" value="false" />

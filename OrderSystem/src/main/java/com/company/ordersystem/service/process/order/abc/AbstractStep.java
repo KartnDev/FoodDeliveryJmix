@@ -1,6 +1,6 @@
 package com.company.ordersystem.service.process.order.abc;
 
-import com.company.ordersystem.entity.Order;
+import com.company.ordersystem.entity.OrderEntity;
 import com.company.ordersystem.repository.OrderRepository;
 import io.jmix.core.FetchPlans;
 import io.jmix.core.security.SystemAuthenticator;
@@ -10,6 +10,8 @@ import org.flowable.engine.delegate.JavaDelegate;
 
 import java.util.Map;
 import java.util.Optional;
+
+import static com.company.ordersystem.service.process.order.OrderProcessManager.PROCESS_USER_KEY;
 
 public abstract class AbstractStep implements JavaDelegate {
     protected final SystemAuthenticator systemAuthenticator;
@@ -47,8 +49,8 @@ public abstract class AbstractStep implements JavaDelegate {
         return (T) runtimeService.getVariable(execution.getId(), variableName);
     }
 
-    protected Optional<Order> findOrder(DelegateExecution execution) {
-        var fetchPlan = fetchPlans.builder(Order.class)
+    protected Optional<OrderEntity> findOrder(DelegateExecution execution) {
+        var fetchPlan = fetchPlans.builder(OrderEntity.class)
                 .addFetchPlan("order-fetch-plan")
                 .build();
 

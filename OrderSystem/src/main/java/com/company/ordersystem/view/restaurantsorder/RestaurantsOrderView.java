@@ -7,6 +7,7 @@ import com.company.ordersystem.view.main.MainView;
 
 import com.company.ordersystem.view.restaurantsorder.order.OrderView;
 import com.company.restaurantapi.model.RestaurantDTO;
+import com.company.useroidcplagin.entity.AppUser;
 import com.vaadin.flow.component.Html;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
@@ -20,6 +21,7 @@ import com.vaadin.flow.router.QueryParameters;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteParameters;
 import io.jmix.core.LoadContext;
+import io.jmix.core.security.CurrentAuthentication;
 import io.jmix.flowui.model.CollectionContainer;
 import io.jmix.flowui.model.CollectionLoader;
 import io.jmix.flowui.view.*;
@@ -46,10 +48,13 @@ public class RestaurantsOrderView extends StandardView {
     private CollectionContainer<RestaurantDTO> restaurantsDc;
     @ViewComponent
     private CollectionLoader<RestaurantDTO> restaurantsDl;
+    @Autowired
+    private CurrentAuthentication currentAuthentication;
 
     @Install(to = "restaurantsDl", target = Target.DATA_LOADER)
     private List<RestaurantDTO> restaurantsLoaderLoadDelegate(final LoadContext<RestaurantDTO> loadContext) {
-        return restaurantClient.listRestaurants();
+        AppUser appUser = (AppUser) currentAuthentication.getUser();
+        return restaurantClient.listRestaurants(appUser.getUserToken());
     }
 
     @Subscribe

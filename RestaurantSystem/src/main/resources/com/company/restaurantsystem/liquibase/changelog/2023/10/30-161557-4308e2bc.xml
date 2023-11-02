@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1" author="RestaurantSystem">
+        <createTable tableName="COOK_FOOD_ITEM_ENTITY">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_COOK_FOOD_ITEM_ENTITY"/>
+            </column>
+            <column name="FOOD_TO_COOK_ID" type="UUID"/>
+            <column name="COUNT_" type="INT"/>
+            <column name="COOK_REQUEST_DTO_ID" type="UUID"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="2" author="RestaurantSystem">
+        <createTable tableName="COOK_ORDER_REQUEST">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_COOK_ORDER_REQUEST"/>
+            </column>
+            <column name="ORDER_ID" type="BIGINT"/>
+            <column name="IS_DONE" type="BOOLEAN"/>
+            <column name="RESTAURANT_ID" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="3" author="RestaurantSystem">
+        <createIndex indexName="IDX_COOK_FOOD_ITEM_ENTITY_COOK_REQUEST_DTO" tableName="COOK_FOOD_ITEM_ENTITY">
+            <column name="COOK_REQUEST_DTO_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="COOK_REQUEST_DTO_ID" baseTableName="COOK_FOOD_ITEM_ENTITY"
+                                 constraintName="FK_COOK_FOOD_ITEM_ENTITY_ON_COOK_REQUEST_DTO"
+                                 referencedColumnNames="ID" referencedTableName="COOK_ORDER_REQUEST"/>
+    </changeSet>
+    <changeSet id="4" author="RestaurantSystem">
+        <createIndex indexName="IDX_COOK_FOOD_ITEM_ENTITY_FOOD_TO_COOK" tableName="COOK_FOOD_ITEM_ENTITY">
+            <column name="FOOD_TO_COOK_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="FOOD_TO_COOK_ID" baseTableName="COOK_FOOD_ITEM_ENTITY"
+                                 constraintName="FK_COOK_FOOD_ITEM_ENTITY_ON_FOOD_TO_COOK" referencedColumnNames="ID"
+                                 referencedTableName="RESTAURANT_MENU_ITEM"/>
+    </changeSet>
+    <changeSet id="5" author="RestaurantSystem">
+        <createIndex indexName="IDX_COOK_ORDER_REQUEST_RESTAURANT" tableName="COOK_ORDER_REQUEST">
+            <column name="RESTAURANT_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="RESTAURANT_ID" baseTableName="COOK_ORDER_REQUEST"
+                                 constraintName="FK_COOK_ORDER_REQUEST_ON_RESTAURANT" referencedColumnNames="ID"
+                                 referencedTableName="RESTAURANT"/>
+    </changeSet>
+</databaseChangeLog>

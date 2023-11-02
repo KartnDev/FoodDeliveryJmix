@@ -1,10 +1,9 @@
 package com.company.restaurantsystem.entity;
 
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
+import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.UUID;
 
@@ -14,9 +13,8 @@ import java.util.UUID;
         @Index(name = "IDX_COOK_FOOD_ITEM_ENTITY_COOK_REQUEST_DTO", columnList = "COOK_REQUEST_DTO_ID")
 })
 @Entity
-@Getter
-@Setter
 public class CookFoodItemEntity {
+    @InstanceName
     @JmixGeneratedValue
     @Column(name = "ID", nullable = false)
     @Id
@@ -33,4 +31,35 @@ public class CookFoodItemEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private CookOrderRequest cookOrderRequest;
 
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public RestaurantFoodItem getFoodToCook() {
+        return foodToCook;
+    }
+
+    public void setFoodToCook(RestaurantFoodItem foodToCook) {
+        this.foodToCook = foodToCook;
+    }
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
+    }
+
+    public CookOrderRequest getCookOrderRequest() {
+        return cookOrderRequest;
+    }
+
+    public void setCookOrderRequest(CookOrderRequest cookOrderRequest) {
+        this.cookOrderRequest = cookOrderRequest;
+    }
 }

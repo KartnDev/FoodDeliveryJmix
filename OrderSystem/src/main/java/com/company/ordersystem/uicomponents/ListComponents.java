@@ -12,13 +12,11 @@ import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.spring.annotation.UIScope;
 import io.jmix.flowui.data.items.ContainerDataProvider;
 import io.jmix.flowui.model.CollectionContainer;
-import lombok.AllArgsConstructor;
 
 import java.io.ByteArrayInputStream;
 import java.util.function.BiConsumer;
 
 @UIScope
-@AllArgsConstructor
 @org.springframework.stereotype.Component
 public final class ListComponents {
 

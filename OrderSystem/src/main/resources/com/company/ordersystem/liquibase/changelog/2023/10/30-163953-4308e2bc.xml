@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1" author="OrderSystem">
+        <addColumn tableName="FOOD_ITEM_COUNTED_ENTITY">
+            <column name="ORDER_ID" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="2" author="OrderSystem">
+        <createIndex indexName="IDX_FOOD_ITEM_COUNTED_ENTITY_ORDER" tableName="FOOD_ITEM_COUNTED_ENTITY">
+            <column name="ORDER_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="ORDER_ID" baseTableName="FOOD_ITEM_COUNTED_ENTITY"
+                                 constraintName="FK_FOOD_ITEM_COUNTED_ENTITY_ON_ORDER" referencedColumnNames="ID"
+                                 referencedTableName="ORDER"/>
+    </changeSet>
+    <changeSet id="3" author="OrderSystem">
+        <dropColumn columnName="draft_order_id" tableName="food_item_counted_entity"/>
+    </changeSet>
+</databaseChangeLog>

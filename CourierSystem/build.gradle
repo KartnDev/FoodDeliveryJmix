@@ -43,21 +43,15 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
-
-    compileOnly 'org.projectlombok:lombok:1.18.30'
-    annotationProcessor 'org.projectlombok:lombok:1.18.30'
-
-    testCompileOnly 'org.projectlombok:lombok:1.18.30'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
-
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
     testImplementation 'io.jmix.flowui:jmix-flowui-test-assist'
+
     implementation 'com.company:useroidcplagin-starter:0.0.1-SNAPSHOT'
+    implementation 'com.company:order-api-starter:0.0.1-SNAPSHOT'
+
     implementation 'org.postgresql:postgresql'
-    implementation 'io.jmix.bpm:jmix-bpm-starter'
-    implementation 'io.jmix.bpm:jmix-bpm-flowui-starter'
 }
 
 test {

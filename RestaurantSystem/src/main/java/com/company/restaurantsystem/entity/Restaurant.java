@@ -12,8 +12,6 @@ import io.jmix.core.entity.annotation.OnDeleteInverse;
 import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -27,8 +25,6 @@ import java.util.UUID;
 @JmixEntity
 @Table(name = "RESTAURANT")
 @Entity
-@Getter
-@Setter
 public class Restaurant implements HasIcon {
     @JmixGeneratedValue
     @Column(name = "ID", nullable = false)
@@ -98,12 +94,132 @@ public class Restaurant implements HasIcon {
     }
 
     @Override
+    public void setAttachment(FileRef attachment) {
+        this.icon = attachment;
+    }
+
+    @Override
     public String getAttachmentName() {
         return MessageFormat.format("restaurant_{0}_icon.png", name);
     }
 
-    @Override
-    public void setAttachment(FileRef attachment) {
-        this.icon = attachment;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<RestaurantFoodItem> getFoodItems() {
+        return foodItems;
+    }
+
+    public void setFoodItems(List<RestaurantFoodItem> foodItems) {
+        this.foodItems = foodItems;
+    }
+
+    public List<AppUser> getOwners() {
+        return owners;
+    }
+
+    public void setOwners(List<AppUser> owners) {
+        this.owners = owners;
+    }
+
+    public List<RestaurantMenu> getMenus() {
+        return menus;
+    }
+
+    public void setMenus(List<RestaurantMenu> menus) {
+        this.menus = menus;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public FileRef getIcon() {
+        return icon;
+    }
+
+    public void setIcon(FileRef icon) {
+        this.icon = icon;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public OffsetDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(OffsetDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public OffsetDateTime getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(OffsetDateTime lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public String getDeletedBy() {
+        return deletedBy;
+    }
+
+    public void setDeletedBy(String deletedBy) {
+        this.deletedBy = deletedBy;
+    }
+
+    public OffsetDateTime getDeletedDate() {
+        return deletedDate;
+    }
+
+    public void setDeletedDate(OffsetDateTime deletedDate) {
+        this.deletedDate = deletedDate;
     }
 }

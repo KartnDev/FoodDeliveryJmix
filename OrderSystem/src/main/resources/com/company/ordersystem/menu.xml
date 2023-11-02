@@ -4,7 +4,7 @@
     <menu id="application" title="msg://com.company.ordersystem/menu.application.title" opened="true">
         <item view="RestaurantsOrderView"
               title="msg://com.company.ordersystem.view.restaurantsorder/restaurantsOrderView.menu.title"/>
-        <item view="DraftOrder.list"
+        <item view="Order.list"
               title="msg://com.company.ordersystem.view.restaurantsorder.order/draftOrderListView.title"/>
     </menu>
 

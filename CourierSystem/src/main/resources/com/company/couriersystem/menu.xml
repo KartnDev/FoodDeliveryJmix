@@ -2,6 +2,10 @@
 <menu-config xmlns="http://jmix.io/schema/flowui/menu">
 
     <menu id="application" title="msg://com.company.couriersystem/menu.application.title" opened="true">
+        <item view="RequestCourierEntity.list"
+              title="msg://com.company.couriersystem.view.requestcourierentity/requestCourierEntityListView.title"/>
+        <item view="MyCurrentDelivery.detail"
+              title="msg://com.company.couriersystem.view.requestcourierentity/myCurrentDelivery.title"/>
     </menu>
 
 </menu-config>

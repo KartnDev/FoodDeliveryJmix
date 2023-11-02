@@ -2,8 +2,6 @@ package com.company.ordersystem.api.rest.v1;
 
 import com.company.ordersystem.security.FullAccessRole;
 import com.company.ordersystem.service.process.order.OrderProcessManager;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,11 +10,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Secured(FullAccessRole.CODE)
 @RestController
-@Slf4j
-@AllArgsConstructor
 @RequestMapping(value = "api/v1")
 public class OrderProcessController {
     private final OrderProcessManager orderProcessManager;
+
+    public OrderProcessController(OrderProcessManager orderProcessManager) {
+        this.orderProcessManager = orderProcessManager;
+    }
 
     @PostMapping("/orders/{orderId}/restaurantstep/{restaurantId}")
     public void continueOrderRestaurantStep(@PathVariable String orderId, @PathVariable String restaurantId) {

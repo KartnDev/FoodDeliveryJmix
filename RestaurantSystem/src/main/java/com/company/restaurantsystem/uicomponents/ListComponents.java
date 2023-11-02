@@ -2,7 +2,6 @@ package com.company.restaurantsystem.uicomponents;
 
 import com.company.restaurantsystem.model.HasIcon;
 import com.company.restaurantsystem.service.AttachmentService;
-import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.avatar.AvatarVariant;
@@ -14,13 +13,10 @@ import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.spring.annotation.UIScope;
 import io.jmix.flowui.data.items.ContainerDataProvider;
 import io.jmix.flowui.model.CollectionContainer;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 
 import java.util.function.BiConsumer;
 
 @UIScope
-@AllArgsConstructor
 @org.springframework.stereotype.Component
 public final class ListComponents {
 
@@ -28,9 +24,13 @@ public final class ListComponents {
 
     private final AttachmentService attachmentService;
 
+    public ListComponents(AttachmentService attachmentService) {
+        this.attachmentService = attachmentService;
+    }
+
     public <T extends HasIcon> VirtualList<T> attachListRenderer(HasComponents rootAttachComponent,
-                                                       CollectionContainer<T> collectionContainer,
-                                                       BiConsumer<HasIcon, ListComponentContext> infoLayoutUpdater) {
+                                                                 CollectionContainer<T> collectionContainer,
+                                                                 BiConsumer<HasIcon, ListComponentContext> infoLayoutUpdater) {
         rootAttachComponent.removeAll();
         var tVirtualList = new VirtualList<T>();
         tVirtualList.setWidthFull();

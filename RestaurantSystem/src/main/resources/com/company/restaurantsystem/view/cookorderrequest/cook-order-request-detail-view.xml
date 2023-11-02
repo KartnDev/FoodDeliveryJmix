@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://cookOrderRequestDetailView.title"
+      focusComponent="form">
+    <data>
+        <instance id="cookOrderRequestDc"
+                  class="com.company.restaurantsystem.entity.CookOrderRequest">
+            <fetchPlan extends="_base">
+                <property name="cookingItems" fetchPlan="_base">
+                    <property name="foodToCook" fetchPlan="_base"/>
+                </property>
+            </fetchPlan>
+            <loader/>
+
+        </instance>
+        <collection id="itemsDc" class="com.company.restaurantsystem.entity.CookFoodItemEntity">
+            <loader id="itemsDl">
+                <query>
+                    <![CDATA[select e from CookFoodItemEntity e where e.cookOrderRequest = :cookRequest]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
+    <actions>
+        <action id="approveAction" type="detail_saveClose"/>
+        <action id="closeAction" type="detail_close"/>
+    </actions>
+    <layout>
+        <formLayout id="form" dataContainer="cookOrderRequestDc">
+            <textField id="orderIdField" property="orderId" readOnly="true"/>
+            <checkbox id="isDoneField" property="isDone" readOnly="true"/>
+        </formLayout>
+        <dataGrid dataContainer="itemsDc">
+            <columns>
+                <column property="count" editable="false"/>
+                <column property="foodToCook.name" editable="false"/>
+            </columns>
+        </dataGrid>
+        <hbox id="detailActions">
+            <button id="approveBtn" action="approveAction"/>
+            <button id="closeBtn" action="closeAction"/>
+        </hbox>
+    </layout>
+</view>

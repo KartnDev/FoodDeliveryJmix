@@ -1,7 +1,7 @@
 package com.company.ordersystem.service.process.order.steps;
 
 import com.company.ordersystem.entity.DraftOrderStatus;
-import com.company.ordersystem.entity.Order;
+import com.company.ordersystem.entity.OrderEntity;
 import com.company.ordersystem.repository.OrderRepository;
 import com.company.ordersystem.service.process.order.abc.AbstractTransactionalStep;
 import io.jmix.core.DataManager;
@@ -25,7 +25,9 @@ public class StartProcessChangeStatusStep extends AbstractTransactionalStep {
     }
 
     @Override
-    protected void doTransactionalStep(DelegateExecution execution, Order order, SaveContext saveContext) {
+    protected void doTransactionalStep(DelegateExecution execution, OrderEntity order, SaveContext saveContext) {
         order.setStatus(DraftOrderStatus.NEW_ORDER);
+        saveContext.saving(order);
+        doSomeWork();
     }
 }

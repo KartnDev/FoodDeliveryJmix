@@ -6,6 +6,8 @@
               title="msg://com.company.restaurantsystem.view.myrestaurants/myRestaurantsView.title"/>
         <item view="Restaurant.list"
               title="msg://com.company.restaurantsystem.view.restaurant/restaurantListView.title"/>
+        <item view="CookOrderRequest.list"
+              title="msg://com.company.restaurantsystem.view.cookorderrequest/cookOrderRequestListView.title"/>
     </menu>
 
 </menu-config>

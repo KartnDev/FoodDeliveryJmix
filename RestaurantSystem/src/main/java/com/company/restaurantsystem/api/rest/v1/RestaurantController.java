@@ -13,20 +13,15 @@ import com.company.restaurantsystem.service.AttachmentService;
 import com.company.restaurantsystem.service.CookOrderService;
 import io.jmix.core.DataManager;
 import io.jmix.core.FetchPlans;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import com.company.restaurantsystem.security.FullAccessRole;
 
-import java.text.MessageFormat;
 import java.util.List;
 import java.util.stream.StreamSupport;
 
 @Secured(FullAccessRole.CODE)
 @RestController
-@Slf4j
-@AllArgsConstructor
 @RequestMapping(value = "api/v1")
 public class RestaurantController {
 
@@ -36,6 +31,20 @@ public class RestaurantController {
     private final FetchPlans fetchPlans;
     private final RestaurantMenuRepository restaurantMenuRepository;
     private final CookOrderService cookOrderService;
+
+    public RestaurantController(RestaurantRepository restaurantRepository,
+                                DataManager dataManager,
+                                AttachmentService attachmentService,
+                                FetchPlans fetchPlans,
+                                RestaurantMenuRepository restaurantMenuRepository,
+                                CookOrderService cookOrderService) {
+        this.restaurantRepository = restaurantRepository;
+        this.dataManager = dataManager;
+        this.attachmentService = attachmentService;
+        this.fetchPlans = fetchPlans;
+        this.restaurantMenuRepository = restaurantMenuRepository;
+        this.cookOrderService = cookOrderService;
+    }
 
     @GetMapping("/restaurants")
     public List<RestaurantDTO> listRestaurants() {
@@ -80,7 +89,7 @@ public class RestaurantController {
                 .toList();
     }
 
-    @GetMapping("/restaurants/{restaurantId}/cook")
+    @PostMapping("/restaurants/{restaurantId}/cook")
     public String getRestaurantCookRequest(@PathVariable Long restaurantId, @RequestBody OrderDTO orderDTO) {
         cookOrderService.submitNewCookOrderFromDTO(orderDTO);
         // we will not bring case that restaurant will not cook, placeholder response

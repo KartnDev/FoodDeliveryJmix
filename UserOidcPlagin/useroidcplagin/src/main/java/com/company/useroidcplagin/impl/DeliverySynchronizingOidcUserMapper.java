@@ -4,6 +4,7 @@ import com.company.useroidcplagin.entity.AppUser;
 import com.company.useroidcplagin.repository.UserRepository;
 import io.jmix.core.SaveContext;
 import io.jmix.core.UnconstrainedDataManager;
+import io.jmix.core.security.SystemAuthenticationToken;
 import io.jmix.core.security.SystemAuthenticator;
 import io.jmix.data.PersistenceHints;
 import io.jmix.oidc.claimsmapper.ClaimsRolesMapper;
@@ -11,6 +12,7 @@ import io.jmix.oidc.usermapper.SynchronizingOidcUserMapper;
 import io.jmix.security.authentication.RoleGrantedAuthority;
 import io.jmix.security.role.ResourceRoleRepository;
 import io.jmix.securitydata.entity.RoleAssignmentEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Component;
 
@@ -80,7 +82,6 @@ public class DeliverySynchronizingOidcUserMapper extends SynchronizingOidcUserMa
                     .query("select e from sec_RoleAssignmentEntity e where e.username = :username")
                     .parameter("username", username)
                     .list();
-            //todo do not remove all assignments but only assignments missing in new user authorities
             saveContext.removing(existingRoleAssignmentEntities);
 
             Collection<RoleAssignmentEntity> newRoleAssignmentEntities = buildRoleAssignmentEntities(username, jmixUser.getAuthorities());
@@ -91,6 +92,7 @@ public class DeliverySynchronizingOidcUserMapper extends SynchronizingOidcUserMa
         if(appUserByUsername.isPresent()) {
             AppUser appUser = appUserByUsername.get();
             appUser.setUsername(jmixUser.getPreferredUsername());
+
             appUser.setFirstName(jmixUser.getGivenName());
             appUser.setLastName(jmixUser.getFamilyName());
             appUser.setEmail(jmixUser.getEmail());
@@ -98,7 +100,6 @@ public class DeliverySynchronizingOidcUserMapper extends SynchronizingOidcUserMa
         } else {
             saveContext.saving(jmixUser);
         }
-
         //persist user details and roles if needed
         dataManager.save(saveContext);
         systemAuthenticator.end();

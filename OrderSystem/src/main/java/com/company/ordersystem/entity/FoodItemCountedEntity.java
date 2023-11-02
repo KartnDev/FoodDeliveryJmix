@@ -6,19 +6,15 @@ import io.jmix.core.entity.annotation.JmixGeneratedValue;
 import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.UUID;
 
 @JmixEntity
 @Table(name = "FOOD_ITEM_COUNTED_ENTITY", indexes = {
         @Index(name = "IDX_FOOD_ITEM_COUNTED_ENTITY_ITEM", columnList = "ITEM_ID"),
-        @Index(name = "IDX_FOOD_ITEM_COUNTED_ENTITY_DRAFT_ORDER", columnList = "DRAFT_ORDER_ID")
+        @Index(name = "IDX_FOOD_ITEM_COUNTED_ENTITY_ORDER", columnList = "ORDER_ID")
 })
 @Entity
-@Getter
-@Setter
 public class FoodItemCountedEntity implements HasIcon {
 
     @InstanceName
@@ -38,9 +34,9 @@ public class FoodItemCountedEntity implements HasIcon {
     @ManyToOne(fetch = FetchType.LAZY)
     private AppUser belongsToUser;
 
-    @JoinColumn(name = "DRAFT_ORDER_ID")
+    @JoinColumn(name = "ORDER_ID")
     @ManyToOne(fetch = FetchType.LAZY)
-    private Order order;
+    private OrderEntity order;
 
     @Override
     public byte[] getIcon() {
@@ -55,5 +51,45 @@ public class FoodItemCountedEntity implements HasIcon {
     @Override
     public String getAttachmentName() {
         return item.getAttachmentName();
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public RestaurantFoodItemReplica getItem() {
+        return item;
+    }
+
+    public void setItem(RestaurantFoodItemReplica item) {
+        this.item = item;
+    }
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
+    }
+
+    public AppUser getBelongsToUser() {
+        return belongsToUser;
+    }
+
+    public void setBelongsToUser(AppUser belongsToUser) {
+        this.belongsToUser = belongsToUser;
+    }
+
+    public OrderEntity getOrder() {
+        return order;
+    }
+
+    public void setOrder(OrderEntity order) {
+        this.order = order;
     }
 }

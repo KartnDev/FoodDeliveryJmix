@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      xmlns:c="http://jmix.io/schema/flowui/jpql-condition"
+      title="msg://draftOrderListView.title"
+      focusComponent="draftOrdersDataGrid">
+    <data readOnly="true">
+        <collection id="draftOrdersDc"
+                    class="com.company.ordersystem.entity.OrderEntity">
+            <fetchPlan extends="_base">
+                <property name="orderItems" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader id="draftOrdersDl">
+                <query>
+                    <![CDATA[select o from OrderEntity o]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <urlQueryParameters>
+            <genericFilter component="genericFilter"/>
+            <pagination component="pagination"/>
+        </urlQueryParameters>
+    </facets>
+    <actions>
+        <action id="closeAction" type="view_close"/>
+    </actions>
+    <layout>
+        <genericFilter id="genericFilter"
+                       dataLoader="draftOrdersDl">
+            <properties include=".*"/>
+        </genericFilter>
+        <hbox id="buttonsPanel" classNames="buttons-panel">
+            <button id="viewHistoryAction" action="ordersDataGrid.viewHistory"/>
+            <simplePagination id="pagination" dataLoader="draftOrdersDl"/>
+        </hbox>
+        <dataGrid id="ordersDataGrid"
+                  width="100%"
+                  minHeight="20em"
+                  dataContainer="draftOrdersDc">
+            <actions>
+                <action id="viewHistory" actionVariant="PRIMARY" icon="EYE" text="msg://viewHistory"/>
+            </actions>
+            <columns>
+                <column property="id" header="msg://OrderNo"/>
+                <column property="restaurantName"/>
+                <column property="restaurantId"/>
+            </columns>
+        </dataGrid>
+        <hbox id="lookupActions" visible="false">
+            <button id="closeButton" action="closeAction"/>
+        </hbox>
+    </layout>
+</view>

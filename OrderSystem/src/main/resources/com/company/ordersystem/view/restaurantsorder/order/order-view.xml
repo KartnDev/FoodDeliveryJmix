@@ -9,7 +9,7 @@
         <collection id="menusDc" class="com.company.restaurantapi.model.RestaurantMenuDTO">
             <loader id="menusDl"/>
         </collection>
-        <instance id="draftOrderDc" class="com.company.ordersystem.entity.Order"/>
+        <instance id="draftOrderDc" class="com.company.ordersystem.entity.OrderEntity"/>
         <instance id="restaurantDc" class="com.company.restaurantapi.model.RestaurantDTO">
             <loader id="restaurantDl"/>
         </instance>

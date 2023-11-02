@@ -2,16 +2,17 @@ package com.company.ordersystem.view.restaurantsorder.order;
 
 
 import com.company.ordersystem.client.RestaurantClient;
-import com.company.ordersystem.entity.Order;
+import com.company.ordersystem.entity.OrderEntity;
 import com.company.ordersystem.entity.FoodItemCountedEntity;
 import com.company.ordersystem.entity.RestaurantFoodItemReplica;
 import com.company.ordersystem.repository.OrderRepository;
+import com.company.ordersystem.service.process.order.OrderProcessManager;
 import com.company.ordersystem.uicomponents.ListComponents;
 import com.company.ordersystem.view.main.MainView;
 import com.company.restaurantapi.model.RestaurantDTO;
 import com.company.restaurantapi.model.RestaurantFoodItemDTO;
 import com.company.restaurantapi.model.RestaurantMenuDTO;
-import com.company.useroidcplagin.impl.UserProvider;
+import com.company.useroidcplagin.entity.AppUser;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.Html;
@@ -35,6 +36,7 @@ import io.jmix.core.FetchPlans;
 import io.jmix.core.Messages;
 import io.jmix.core.Metadata;
 import io.jmix.core.security.AccessDeniedException;
+import io.jmix.core.security.CurrentAuthentication;
 import io.jmix.flowui.component.tabsheet.JmixTabSheet;
 import io.jmix.flowui.kit.action.ActionPerformedEvent;
 import io.jmix.flowui.model.*;
@@ -52,47 +54,49 @@ import static com.company.ordersystem.view.OrderSystemPathConstants.*;
 @ViewController("OrderView")
 @ViewDescriptor("order-view.xml")
 public class OrderView extends StandardView {
+
+    @Autowired
+    private RestaurantClient restaurantClient;
+    @Autowired
+    private OrderRepository orderRepository;
+    @Autowired
+    private Messages messages;
+    @Autowired
+    private FetchPlans fetchPlans;
+    @Autowired
+    private ListComponents listComponents;
+    @Autowired
+    private OrderProcessManager orderProcessManager;
+    @Autowired
+    private DataComponents dataComponents;
+    @Autowired
+    private CurrentAuthentication currentAuthentication;
     @ViewComponent
-    private InstanceContainer<Order> draftOrderDc;
+    private Div orderContainer;
+    @ViewComponent
+    private H3 orderTitle;
+    @ViewComponent
+    private InstanceContainer<RestaurantDTO> restaurantDc;
+    @ViewComponent
+    private InstanceLoader<RestaurantDTO> restaurantDl;
+    @ViewComponent
+    private JmixTabSheet menuTabSheetContainer;
+    @ViewComponent
+    private InstanceContainer<OrderEntity> draftOrderDc;
     @ViewComponent
     private CollectionContainer<RestaurantMenuDTO> menusDc;
     @ViewComponent
     private CollectionLoader<RestaurantMenuDTO> menusDl;
     @ViewComponent
     private DataContext dataContext;
-    @Autowired
-    private RestaurantClient restaurantClient;
-    @ViewComponent
-    private JmixTabSheet menuTabSheetContainer;
-    @Autowired
-    private ListComponents listComponents;
-    @Autowired
-    private Metadata metadata;
-    @ViewComponent
-    private InstanceContainer<RestaurantDTO> restaurantDc;
-    @ViewComponent
-    private InstanceLoader<RestaurantDTO> restaurantDl;
-    @Autowired
-    private UserProvider userProvider;
-    @ViewComponent
-    private Div orderContainer;
-    @Autowired
-    private DataComponents dataComponents;
-    @ViewComponent
-    private H3 orderTitle;
-    @Autowired
-    private OrderRepository orderRepository;
-
-    private VirtualList<FoodItemCountedEntity> restaurantFoodItemList;
-    private CollectionContainer<FoodItemCountedEntity> draftOrderItemsDc;
-    @Autowired
-    private Messages messages;
-    @Autowired
-    private FetchPlans fetchPlans;
     @ViewComponent
     private Div content;
     @ViewComponent
     private VerticalLayout readonlyContent;
+
+
+    private VirtualList<FoodItemCountedEntity> restaurantFoodItemList;
+    private CollectionContainer<FoodItemCountedEntity> draftOrderItemsDc;
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
@@ -108,10 +112,10 @@ public class OrderView extends StandardView {
     }
 
     private void initHistoryOrderView(BeforeEnterEvent event) {
-        FetchPlan fetchPlan = fetchPlans.builder(Order.class)
-                .addFetchPlan("draftOrder-fetch-plan")
+        FetchPlan fetchPlan = fetchPlans.builder(OrderEntity.class)
+                .addFetchPlan("order-fetch-plan")
                 .build();
-        Optional<Order> orderOptional = event.getRouteParameters().get(ORDER_ID_PATH_PARAM)
+        Optional<OrderEntity> orderOptional = event.getRouteParameters().get(ORDER_ID_PATH_PARAM)
                 .flatMap(orderId -> orderRepository.findById(Long.valueOf(orderId), fetchPlan));
         if (orderOptional.isPresent()) {
             var draft = orderOptional.get();
@@ -137,7 +141,7 @@ public class OrderView extends StandardView {
     }
 
     private void initNewOrderView(BeforeEnterEvent event) {
-        draftOrderDc.setItem(dataContext.create(Order.class));
+        draftOrderDc.setItem(dataContext.create(OrderEntity.class));
         QueryParameters queryParameters = event.getLocation().getQueryParameters();
         if (!queryParameters.getParameters().containsKey(RESTAURANT_ID_PATH_PARAM) &&
                 queryParameters.getParameters().get(RESTAURANT_ID_PATH_PARAM).size() != 1) {
@@ -184,7 +188,9 @@ public class OrderView extends StandardView {
     }
 
     private void initRestaurantDc(String restaurantId) {
-        restaurantDl.setLoadDelegate(e -> restaurantClient.getRestaurantById(Long.valueOf(restaurantId)));
+        AppUser appUser = (AppUser) currentAuthentication.getUser();
+
+        restaurantDl.setLoadDelegate(e -> restaurantClient.getRestaurantById(Long.valueOf(restaurantId), appUser.getUserToken()));
         restaurantDl.load();
 
         draftOrderDc.getItem().setRestaurantId(restaurantDc.getItem().getId());
@@ -192,7 +198,9 @@ public class OrderView extends StandardView {
     }
 
     private void initMenuTabsForRestaurant(String restaurantId) {
-        menusDl.setLoadDelegate(e -> restaurantClient.listRestaurantMenus(Long.valueOf(restaurantId)));
+        AppUser appUser = (AppUser) currentAuthentication.getUser();
+
+        menusDl.setLoadDelegate(e -> restaurantClient.listRestaurantMenus(Long.valueOf(restaurantId), appUser.getUserToken()));
         menusDl.load();
         menusDc.getMutableItems().forEach(menu -> menuTabSheetContainer.add(menu.getName(), generateListItemsForMenu(menu)));
     }
@@ -232,7 +240,7 @@ public class OrderView extends StandardView {
         var addButton = new Button(new Icon(VaadinIcon.PLUS));
         addButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE);
         addButton.addClickListener(e -> {
-            Order order = draftOrderDc.getItem();
+            OrderEntity order = draftOrderDc.getItem();
             if (CollectionUtils.isEmpty(order.getOrderItems()) || orderDoesNotContainsAnyFoodItem(order, item)) {
                 FoodItemCountedEntity foodItemCountedEntity = dataContext.create(FoodItemCountedEntity.class);
                 foodItemCountedEntity.setItem(createReplica(item));
@@ -257,7 +265,7 @@ public class OrderView extends StandardView {
         var removeButton = new Button(new Icon(VaadinIcon.MINUS));
         removeButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE, ButtonVariant.LUMO_ERROR);
         removeButton.addClickListener(e -> {
-            Order order = draftOrderDc.getItem();
+            OrderEntity order = draftOrderDc.getItem();
             FoodItemCountedEntity foodItemCountedEntityOptional = order.getOrderItems().stream()
                     .filter(foodItem -> foodItem.getItem().getSourceId().equals(item.getId()))
                     .findFirst()
@@ -289,7 +297,7 @@ public class OrderView extends StandardView {
         orderTitle.setText(messages.formatMessage(getClass(), "OrderFormatted", totalPrice));
     }
 
-    private boolean orderDoesNotContainsAnyFoodItem(Order order, RestaurantFoodItemDTO item) {
+    private boolean orderDoesNotContainsAnyFoodItem(OrderEntity order, RestaurantFoodItemDTO item) {
         return order.getOrderItems()
                 .stream()
                 .map(FoodItemCountedEntity::getItem)
@@ -301,7 +309,7 @@ public class OrderView extends StandardView {
         replica.setName(original.getName());
         replica.setIcon(original.getIcon());
         replica.setDescription(original.getDescription());
-        replica.setBelongsToUser(userProvider.getCurrentUser());
+        replica.setBelongsToUser((AppUser) currentAuthentication.getUser());
         replica.setPrice(original.getPrice());
         replica.setSourceId(original.getId());
         return replica;
@@ -310,6 +318,7 @@ public class OrderView extends StandardView {
     @Subscribe("approveOrder")
     public void onApproveOrder(final ActionPerformedEvent event) {
         dataContext.save();
+        orderProcessManager.startOrderProcess(draftOrderDc.getItem().getId().toString());
         close(StandardOutcome.SAVE);
     }
 
