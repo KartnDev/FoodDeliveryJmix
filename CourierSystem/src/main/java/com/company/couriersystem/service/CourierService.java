@@ -44,13 +44,12 @@ public class CourierService {
 
     private String generateItemsTicket(OrderDTO orderDTO) {
         StringBuilder stringBuilder = new StringBuilder();
-        orderDTO.getItems()
-                .forEach(item -> stringBuilder.append(
-                        MessageFormat.format("<div></br> {0}, <strong>x{1}</strong></div>",
-                                item.getFoodItemName(), item.getCount())));
+        orderDTO.getItems().forEach(item -> stringBuilder.append(
+                MessageFormat.format("<div></br> {0}, <strong>x{1}</strong></div>",
+                        item.getFoodItemName(), item.getCount())));
 
         return "<div>" +
-                "<h3> "+ orderDTO.getRestaurantName()+" </h3>" +
+                "<h3> " + orderDTO.getRestaurantName() + " </h3>" +
                 stringBuilder +
                 "</div>";
     }
@@ -60,9 +59,9 @@ public class CourierService {
         List<RequestCourierEntity> listRequestEntities =
                 requestCourierEntityRepository.findRequestCourierEntitiesByAssingeeCourierAndStatus(
                         currentUser, DeliveryStatus.NEW_REQUEST.getId());
-        if(listRequestEntities.isEmpty()) {
+        if (listRequestEntities.isEmpty()) {
             return Optional.empty();
-        } else if(listRequestEntities.size() > 1) {
+        } else if (listRequestEntities.size() > 1) {
             throw new IllegalStateException("For current user request size greater then 2, that is illegal");
         }
         return Optional.of(listRequestEntities.get(0));

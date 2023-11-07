@@ -84,24 +84,29 @@ public class MyRestaurantDetailView extends StandardDetailView<Restaurant> {
     private BaseAction menusDataGridRemoveMenuAction;
     @ViewComponent
     private JmixTabSheet tabSheet;
-
-    private VirtualList<RestaurantFoodItem> restaurantFoodItemList;
     @ViewComponent
     private DataContext dataContext;
-    @Autowired
-    private DataManager dataManager;
+
+    private VirtualList<RestaurantFoodItem> restaurantFoodItemList;
 
     @Subscribe
     public void onBeforeShow(final BeforeShowEvent event) {
-        tabSheet.getTabAt(2).getStyle().set("overflow", " initial");
-
-        restaurantName.setText(getEditedEntity().getName());
+        loadTabSheetStyle();
+        initRestaurantText();
         initDescriptions();
         initVisibility();
         initIconFields();
         initMenuItemsList();
         initMenusGrid();
         changeMenusActionVisibility();
+    }
+
+    private void loadTabSheetStyle(){
+        tabSheet.getTabAt(2).getStyle().set("overflow", "initial");
+    }
+
+    private void initRestaurantText() {
+        restaurantName.setText(getEditedEntity().getName());
     }
 
     private void initMenusGrid() {
@@ -111,7 +116,7 @@ public class MyRestaurantDetailView extends StandardDetailView<Restaurant> {
                                 .map(RestaurantFoodItem::getName)
                                 .toList()
                 ))))
-                .setHeader("Items");
+                .setHeader(messages.getMessage("menusDataGrid.Items"));
     }
 
 
@@ -142,11 +147,11 @@ public class MyRestaurantDetailView extends StandardDetailView<Restaurant> {
     }
 
     private void foodItemsUpdater(RestaurantFoodItem item, ListComponents.ListComponentContext componentContext) {
-        componentContext.infoLayout().add(new Html(MessageFormat.format("<strong>{0}</strong>", item.getName())));
+        componentContext.infoLayout().add(new Html(messages.formatMessage(getClass(), "foodItemsHeader", item.getName())));
 
         var horizontalLayout = new HorizontalLayout();
         horizontalLayout.add(new Text(item.getDescription()));
-        horizontalLayout.add(new Html(MessageFormat.format("<div><strong>Price: </strong>{0}$</div>", item.getPrice())));
+        horizontalLayout.add(new Html(messages.formatMessage(getClass(), "foodItemsDescription", item.getPrice())));
         horizontalLayout.setPadding(false);
         horizontalLayout.setMargin(false);
         horizontalLayout.setAlignItems(FlexComponent.Alignment.CENTER);
@@ -159,7 +164,7 @@ public class MyRestaurantDetailView extends StandardDetailView<Restaurant> {
         buttonsPanel.setSpacing(false);
 
         var detailButton = new Button(new Icon(VaadinIcon.PENCIL));
-        detailButton.setText("Edit");
+        detailButton.setText(messages.getMessage("actions.Edit"));
         detailButton.addClickListener(e -> dialogWindows.detail(this, RestaurantFoodItem.class)
                 .withViewClass(RestaurantFoodItemDetailView.class)
                 .editEntity(item)
@@ -174,7 +179,7 @@ public class MyRestaurantDetailView extends StandardDetailView<Restaurant> {
         detailButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE);
 
         var removeButton = new Button(new Icon(VaadinIcon.TRASH));
-        removeButton.setText("Remove");
+        removeButton.setText(messages.getMessage("actions.Remove"));
         removeButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE, ButtonVariant.LUMO_ERROR);
         removeButton.addClickListener(e -> {
             menusFoodItemsDc.getMutableItems().remove(item);
@@ -186,6 +191,7 @@ public class MyRestaurantDetailView extends StandardDetailView<Restaurant> {
     }
 
     private void initIconFields() {
+        //noinspection DuplicatedCode
         if (getEditedEntity().getIcon() != null) {
             try {
                 restaurantAvatarIcon.setImageResource(new StreamResource(getEditedEntity().getAttachmentName(),

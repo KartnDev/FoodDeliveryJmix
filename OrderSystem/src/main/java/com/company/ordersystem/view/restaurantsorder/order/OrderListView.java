@@ -33,16 +33,15 @@ import static com.company.ordersystem.view.OrderSystemPathConstants.*;
 public class OrderListView extends StandardListView<OrderEntity> {
     @Autowired
     private ViewNavigationSupport viewNavigationSupport;
-    @ViewComponent
-    private DataGrid<OrderEntity> ordersDataGrid;
-    @ViewComponent("ordersDataGrid.viewHistory")
-    private BaseAction viewHistory;
-    @ViewComponent
-    private CollectionLoader<OrderEntity> draftOrdersDl;
     @Autowired
     private CurrentAuthentication currentAuthentication;
     @Autowired
     private Messages messages;
+    @ViewComponent
+    private DataGrid<OrderEntity> ordersDataGrid;
+    @ViewComponent("ordersDataGrid.viewHistory")
+    private BaseAction viewHistory;
+
 
     @Subscribe("ordersDataGrid.viewHistory")
     public void onDraftOrdersDataGridViewHistory(final ActionPerformedEvent event) {
@@ -61,12 +60,12 @@ public class OrderListView extends StandardListView<OrderEntity> {
     public void onBeforeShow(final BeforeShowEvent event) {
         ordersDataGrid.addSelectionListener(e -> viewHistory.setEnabled(!e.getAllSelectedItems().isEmpty()));
         Grid.Column<OrderEntity> orderEntityColumn = ordersDataGrid.addColumn(new ComponentRenderer<>(e -> switch (e.getStatus()) {
-            case NEW_ORDER -> createBarge(VaadinIcon.CART, "Payed", "primary");
-            case WAIT_FOR_RESTAURANT -> createBarge(VaadinIcon.CUTLERY, "Wait for restaurant", null);
-            case RESTAURANT_COOKING -> createBarge(VaadinIcon.CROSS_CUTLERY, "Wait for cooking", "contrast");
-            case COURIER_FINDING -> createBarge(VaadinIcon.EXIT_O, "Finding courier", "contrast");
-            case DELIVERING -> createBarge(VaadinIcon.CART, "Delivering", "primary");
-            case DONE -> createBarge(VaadinIcon.CHECK, "Done", "success");
+            case NEW_ORDER -> createBarge(VaadinIcon.CART, messages.getMessage("Payed"), "primary");
+            case WAIT_FOR_RESTAURANT -> createBarge(VaadinIcon.CUTLERY, messages.getMessage("WaitForRestaurant"), null);
+            case RESTAURANT_COOKING -> createBarge(VaadinIcon.CROSS_CUTLERY, messages.getMessage("WaitForCooking"), "contrast");
+            case COURIER_FINDING -> createBarge(VaadinIcon.EXIT_O, messages.getMessage("FindingCourier"), "contrast");
+            case DELIVERING -> createBarge(VaadinIcon.CART, messages.getMessage("Delivering"), "primary");
+            case DONE -> createBarge(VaadinIcon.CHECK, messages.getMessage("Done"), "success");
         }));
         orderEntityColumn.setHeader(messages.getMessage("status"));
     }

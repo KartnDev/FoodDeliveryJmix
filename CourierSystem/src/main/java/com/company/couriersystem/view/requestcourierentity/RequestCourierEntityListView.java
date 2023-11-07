@@ -12,6 +12,7 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.Route;
 import io.jmix.core.DataManager;
+import io.jmix.core.Messages;
 import io.jmix.core.security.CurrentAuthentication;
 import io.jmix.flowui.component.grid.DataGrid;
 import io.jmix.flowui.kit.component.ComponentUtils;
@@ -27,23 +28,25 @@ import java.util.Optional;
 @LookupComponent("requestCourierEntitiesDataGrid")
 @DialogMode(width = "64em")
 public class RequestCourierEntityListView extends StandardListView<RequestCourierEntity> {
-    @ViewComponent
-    private DataGrid<RequestCourierEntity> requestCourierEntitiesDataGrid;
-    @ViewComponent
-    private CollectionLoader<RequestCourierEntity> requestCourierEntitiesDl;
     @Autowired
     private CourierService courierService;
     @Autowired
     private CurrentAuthentication currentAuthentication;
     @Autowired
     private DataManager dataManager;
+    @ViewComponent
+    private DataGrid<RequestCourierEntity> requestCourierEntitiesDataGrid;
+    @ViewComponent
+    private CollectionLoader<RequestCourierEntity> requestCourierEntitiesDl;
+    @Autowired
+    private Messages messages;
 
     @Subscribe
     public void onBeforeShow(final BeforeShowEvent event) {
         Optional<RequestCourierEntity> deliveryForCurrentUser = courierService.findDeliveryForCurrentUser();
         if(deliveryForCurrentUser.isEmpty()) {
             Grid.Column<RequestCourierEntity> requestCourierEntityColumn = requestCourierEntitiesDataGrid.addColumn(new ComponentRenderer<>(e -> {
-                var button = new Button("Assign myself");
+                var button = new Button(messages.getMessage(getClass(), "assignMyself"));
                 button.setIcon(ComponentUtils.convertToIcon(VaadinIcon.EXIT_O));
                 button.addClickListener(clickEvent -> {
                     e.setAssingeeCourier((AppUser) currentAuthentication.getUser());
@@ -53,7 +56,7 @@ public class RequestCourierEntityListView extends StandardListView<RequestCourie
                 });
                 return button;
             }));
-            requestCourierEntityColumn.setHeader("Actions");
+            requestCourierEntityColumn.setHeader(messages.getMessage("Actions"));
         }
 
     }

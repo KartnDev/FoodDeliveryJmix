@@ -68,8 +68,8 @@ public class RestaurantsOrderView extends StandardView {
         componentContext.infoLayout().add(new Html("<strong>" + restaurant.getName() + "</strong>"));
         componentContext.infoLayout().add(new Text(restaurant.getDescription()));
 
-        var detailButton = new Button(new Icon(VaadinIcon.PENCIL));
-        detailButton.setText("Edit");
+        var detailButton = new Button(new Icon(VaadinIcon.EXIT_O));
+        detailButton.setText("Order here");
         detailButton.addClickListener(e -> viewNavigationSupport.navigate(OrderView.class,
                 new RouteParameters(ORDER_ID_PATH_PARAM, NEW_ORDER_ID),
                 QueryParameters.of(RESTAURANT_ID_PATH_PARAM, String.valueOf(restaurant.getId()))));

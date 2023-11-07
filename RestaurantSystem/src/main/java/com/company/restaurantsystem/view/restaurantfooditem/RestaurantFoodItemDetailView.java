@@ -23,17 +23,18 @@ import java.io.IOException;
 @ViewDescriptor("restaurant-food-item-detail-view.xml")
 @EditedEntityContainer("restaurantFoodItemDc")
 public class RestaurantFoodItemDetailView extends StandardDetailView<RestaurantFoodItem> {
+
+    @Autowired
+    private AttachmentService attachmentService;
     @ViewComponent
     private Avatar itemAvatarIcon;
     @ViewComponent
     private FileUploadField itemAvatarIconUpload;
     @ViewComponent
     private H2 itemName;
-    @Autowired
-    private AttachmentService attachmentService;
 
     @Subscribe
-    public void onBeforeSave(final BeforeSaveEvent event) {
+    public void obBeforeShow(final BeforeShowEvent event) {
         initIconFields();
     }
 

@@ -19,7 +19,7 @@
         <dataLoadCoordinator auto="true"/>
     </facets>
     <actions>
-        <action id="saveAction" type="view_close"/>
+        <action id="saveAction" type="view_close" text="msg://markDelivered" icon="CHECK"/>
         <action id="closeAction" type="view_close"/>
     </actions>
     <layout>

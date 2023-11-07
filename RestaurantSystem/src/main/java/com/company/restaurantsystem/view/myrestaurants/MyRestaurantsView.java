@@ -14,6 +14,7 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteParameters;
+import io.jmix.core.Messages;
 import io.jmix.core.security.CurrentAuthentication;
 import io.jmix.flowui.model.CollectionContainer;
 import io.jmix.flowui.model.CollectionLoader;
@@ -32,7 +33,8 @@ public class MyRestaurantsView extends StandardView {
     private ViewNavigationSupport viewNavigationSupport;
     @Autowired
     private ListComponents listComponents;
-
+    @Autowired
+    private Messages messages;
     @ViewComponent
     private CollectionLoader<Restaurant> restaurantsDl;
     @ViewComponent
@@ -53,18 +55,18 @@ public class MyRestaurantsView extends StandardView {
     }
 
     private void restaurantsUpdater(Restaurant restaurant, ListComponents.ListComponentContext componentContext) {
-        componentContext.infoLayout().add(new Html("<strong>" + restaurant.getName() + "</strong>"));
+        componentContext.infoLayout().add(new Html(messages.formatMessage(getClass(), "restaurantItemsHeader", restaurant.getName())));
         componentContext.infoLayout().add(new Text(restaurant.getDescription()));
 
         var detailButton = new Button(new Icon(VaadinIcon.PENCIL));
-        detailButton.setText("Edit");
+        detailButton.setText(messages.getMessage("actions.Edit"));
         detailButton.addClickListener(e -> viewNavigationSupport.navigate(MyRestaurantDetailView.class,
                 new RouteParameters("id", String.valueOf(restaurant.getId()))));
         detailButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE);
 
         var details = new Details();
         details.setContent(new Text(restaurant.getDescription()));
-        details.setSummaryText("Information");
+        details.setSummaryText(messages.getMessage("information"));
 
         componentContext.infoLayout().add(details);
         componentContext.rootLayout().add(detailButton);

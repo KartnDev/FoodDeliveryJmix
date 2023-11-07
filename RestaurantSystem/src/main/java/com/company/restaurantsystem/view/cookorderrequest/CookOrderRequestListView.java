@@ -19,27 +19,33 @@ import org.springframework.beans.factory.annotation.Autowired;
 @LookupComponent("cookOrderRequestsDataGrid")
 @DialogMode(width = "64em")
 public class CookOrderRequestListView extends StandardListView<CookOrderRequest> {
-    @ViewComponent
-    private DataGrid<CookOrderRequest> cookOrderRequestsDataGrid;
+    private static final String IS_DONE_COLUMN = "isDone";
+
     @Autowired
     private Messages messages;
+    @ViewComponent
+    private DataGrid<CookOrderRequest> cookOrderRequestsDataGrid;
 
     @Subscribe
     public void onBeforeShow(final BeforeShowEvent event) {
+        if(cookOrderRequestsDataGrid.getColumnByKey(IS_DONE_COLUMN) != null) {
+            return;
+        }
         Grid.Column<CookOrderRequest> isDone = cookOrderRequestsDataGrid.addColumn(new ComponentRenderer<>(e -> {
             var badge = new Span();
             badge.getElement().getThemeList().add("badge");
             if (e.getIsDone()) {
                 badge.getElement().getThemeList().add("success");
-                badge.setText("Done");
+                badge.setText(messages.getMessage("cookOrderRequestsDataGrid.Done"));
             } else {
                 badge.getElement().getThemeList().add("error");
-                badge.setText("Wait for cook");
+                badge.setText(messages.getMessage("cookOrderRequestsDataGrid.waitForCook"));
             }
 
             return badge;
         }));
-        isDone.setHeader(messages.getMessage(getClass(), "isDone"));
+        isDone.setKey(IS_DONE_COLUMN);
+        isDone.setHeader(messages.getMessage(getClass(), IS_DONE_COLUMN));
     }
 
 }

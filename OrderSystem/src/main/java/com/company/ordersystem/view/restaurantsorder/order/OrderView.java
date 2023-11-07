@@ -94,7 +94,6 @@ public class OrderView extends StandardView {
     @ViewComponent
     private VerticalLayout readonlyContent;
 
-
     private VirtualList<FoodItemCountedEntity> restaurantFoodItemList;
     private CollectionContainer<FoodItemCountedEntity> draftOrderItemsDc;
 
@@ -126,8 +125,8 @@ public class OrderView extends StandardView {
                     .mapToInt(item -> item.getCount() * item.getItem().getPrice())
                     .sum();
 
-            readonlyContent.add(new H3(MessageFormat.format("Restaurant: {0}", draft.getRestaurantName())));
-            readonlyContent.add(new H4(MessageFormat.format("Order price: {0}$", String.valueOf(totalPriceVal))));
+            readonlyContent.add(new H3(messages.formatMessage(getClass(), "restaurantHeader", draft.getRestaurantName())));
+            readonlyContent.add(new H4(messages.formatMessage(getClass(), "orderPriceHeader", totalPriceVal)));
 
             var listContainer = new Div();
             listContainer.setWidthFull();
@@ -172,15 +171,15 @@ public class OrderView extends StandardView {
     }
 
     private void foodItemsUpdater(FoodItemCountedEntity item, ListComponents.ListComponentContext componentContext) {
-        var title = new Html(MessageFormat.format(
-                "<div><strong>{0} </strong> - x{1}</div>", item.getItem().getName(), item.getCount()));
+        var title = new Html(messages.formatMessage(getClass(),
+                "foodItemsHeader", item.getItem().getName(), item.getCount()));
 
         componentContext.infoLayout().add(title);
 
         var horizontalLayout = new HorizontalLayout();
         horizontalLayout.add(new Text(item.getItem().getDescription()));
-        horizontalLayout.add(new Html(MessageFormat.format("<div><strong>Price: </strong>{0}$</div>", item.getItem().getPrice())));
-        horizontalLayout.add(new Html(MessageFormat.format("<div><strong>Total Price: </strong>{0}$</div>", item.getCount() * item.getItem().getPrice())));
+        horizontalLayout.add(new Html(messages.formatMessage(getClass(), "foodItemsDescriptionPrice", item.getItem().getPrice())));
+        horizontalLayout.add(new Html(messages.formatMessage(getClass(), "foodItemsDescriptionCountedPrice", item.getCount() * item.getItem().getPrice())));
         horizontalLayout.setPadding(false);
         horizontalLayout.setMargin(false);
         horizontalLayout.setAlignItems(FlexComponent.Alignment.CENTER);
@@ -221,11 +220,11 @@ public class OrderView extends StandardView {
 
     private void menuItemsUpdater(ListComponents.ListComponentContext componentContext,
                                   RestaurantFoodItemDTO item) {
-        componentContext.infoLayout().add(new Html(MessageFormat.format("<strong>{0}</strong>", item.getName())));
+        componentContext.infoLayout().add(new Html(messages.formatMessage(getClass(), "menusHeader", item.getName())));
 
         var horizontalLayout = new HorizontalLayout();
         horizontalLayout.add(new Text(item.getDescription()));
-        horizontalLayout.add(new Html(MessageFormat.format("<div><strong>Price: </strong>{0}$</div>", item.getPrice())));
+        horizontalLayout.add(new Html(messages.formatMessage(getClass(), "menusPrice", item.getPrice())));
         horizontalLayout.setPadding(false);
         horizontalLayout.setMargin(false);
         horizontalLayout.setAlignItems(FlexComponent.Alignment.CENTER);

@@ -20,22 +20,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 @ViewDescriptor("my-current-delivery.xml")
 @EditedEntityContainer("requestCourierEntityDc")
 public class MyCurrentDelivery extends StandardView {
+    @Autowired
+    private CurrentAuthentication currentAuthentication;
+    @Autowired
+    private CourierService courierService;
+
     @ViewComponent
     private InstanceContainer<RequestCourierEntity> requestCourierEntityDc;
     @ViewComponent
     private InstanceLoader<RequestCourierEntity> requestCourierEntityDl;
     @ViewComponent
     private Div ticketContainer;
-    @Autowired
-    private CurrentAuthentication currentAuthentication;
-    @Autowired
-    private CourierService courierService;
 
     @Subscribe
     public void onBeforeShow(final BeforeShowEvent event) {
         requestCourierEntityDl.setParameter("currentUser", currentAuthentication.getUser());
         requestCourierEntityDl.load();
-        ticketContainer.add(new Html(requestCourierEntityDc.getItem().getItemsTicketHtml()));
+        if(ticketContainer.getChildren().findAny().isEmpty()) {
+            ticketContainer.add(new Html(requestCourierEntityDc.getItem().getItemsTicketHtml()));
+        }
     }
 
     @Subscribe("saveAction")

@@ -39,6 +39,7 @@
                   dataContainer="requestCourierEntitiesDc">
             <columns>
                 <column property="id"/>
+                <column property="orderId"/>
                 <column property="restaurantName"/>
                 <column property="restaurantId"/>
             </columns>

@@ -30,15 +30,15 @@ import java.util.ArrayList;
 @EditedEntityContainer("restaurantMenuDc")
 @DialogMode(resizable = true, width = "50em", height = "40em")
 public class RestaurantMenuDetailView extends StandardDetailView<RestaurantMenu> {
-    @ViewComponent
-    private JmixMultiSelectComboBoxPicker<RestaurantFoodItem> itemsMultiSelectComboBoxPicker;
-    private CollectionContainer<RestaurantFoodItem> variantItems;
-    @ViewComponent
-    private CollectionPropertyContainer<RestaurantFoodItem> itemsDc;
     @Autowired
     private Actions actions;
     @Autowired
     private DataProviderHelper dataProviderHelper;
+    @ViewComponent
+    private JmixMultiSelectComboBoxPicker<RestaurantFoodItem> itemsMultiSelectComboBoxPicker;
+    @ViewComponent
+    private CollectionPropertyContainer<RestaurantFoodItem> itemsDc;
+    private CollectionContainer<RestaurantFoodItem> variantItems;
 
     @Subscribe
     public void onBeforeShow(final BeforeShowEvent event) {
@@ -57,7 +57,6 @@ public class RestaurantMenuDetailView extends StandardDetailView<RestaurantMenu>
             itemsMultiSelectComboBoxPicker.setValue(itemsDc.getMutableItems());
         }
     }
-
 
     public void setItems(CollectionContainer<RestaurantFoodItem> items) {
         this.variantItems = items;
