@@ -60,7 +60,7 @@ public class OrderListView extends StandardListView<OrderEntity> {
     public void onBeforeShow(final BeforeShowEvent event) {
         ordersDataGrid.addSelectionListener(e -> viewHistory.setEnabled(!e.getAllSelectedItems().isEmpty()));
         Grid.Column<OrderEntity> orderEntityColumn = ordersDataGrid.addColumn(new ComponentRenderer<>(e -> switch (e.getStatus()) {
-            case NEW_ORDER -> createBarge(VaadinIcon.CART, messages.getMessage("Payed"), "primary");
+            case NEW_ORDER -> createBarge(VaadinIcon.CART, messages.getMessage("Paid"), "primary");
             case WAIT_FOR_RESTAURANT -> createBarge(VaadinIcon.CUTLERY, messages.getMessage("WaitForRestaurant"), null);
             case RESTAURANT_COOKING -> createBarge(VaadinIcon.CROSS_CUTLERY, messages.getMessage("WaitForCooking"), "contrast");
             case COURIER_FINDING -> createBarge(VaadinIcon.EXIT_O, messages.getMessage("FindingCourier"), "contrast");

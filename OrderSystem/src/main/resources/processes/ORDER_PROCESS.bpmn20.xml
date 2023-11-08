@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:jmix="http://jmix.io/schema/bpm/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:flowable="http://flowable.org/bpmn" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.flowable.org/processdef">
+  <process id="ORDER_PROCESS" name="Process" isExecutable="true">
+    <startEvent id="startEvent1" name="Начало">
+      <extensionElements>
+        <jmix:formData type="no-form" />
+      </extensionElements>
+      <outgoing>Flow_1llrlkn</outgoing>
+    </startEvent>
+    <sequenceFlow id="Flow_1llrlkn" sourceRef="startEvent1" targetRef="Activity_1m2e02k" />
+    <serviceTask id="Activity_1m2e02k" name="Перевести заказ в статус в работе" flowable:async="true" flowable:expression="${startProcessChangeStatusStep.execute(execution)}" jmix:taskType="springBean" jmix:beanName="startProcessChangeStatusStep">
+      <extensionElements>
+        <jmix:formData type="no-form" />
+        <jmix:springBean beanName="startProcessChangeStatusStep" methodName="execute">
+          <jmix:methodParam name="execution" type="org.flowable.engine.delegate.DelegateExecution" isVariable="true">execution</jmix:methodParam>
+        </jmix:springBean>
+      </extensionElements>
+      <incoming>Flow_1llrlkn</incoming>
+      <outgoing>Flow_1h005l8</outgoing>
+    </serviceTask>
+    <sequenceFlow id="Flow_1h005l8" sourceRef="Activity_1m2e02k" targetRef="Activity_1jhcclq" />
+    <serviceTask id="Activity_1jhcclq" name="Выдать запрос ресторану на готовку" flowable:async="true" flowable:expression="${requestRestaurantCookStep.execute(execution)}" jmix:taskType="springBean" jmix:beanName="requestRestaurantCookStep">
+      <extensionElements>
+        <jmix:springBean beanName="requestRestaurantCookStep" methodName="execute">
+          <jmix:methodParam name="execution" type="org.flowable.engine.delegate.DelegateExecution" isVariable="true">execution</jmix:methodParam>
+        </jmix:springBean>
+      </extensionElements>
+      <incoming>Flow_1h005l8</incoming>
+      <outgoing>Flow_0b7vho3</outgoing>
+    </serviceTask>
+    <sequenceFlow id="Flow_0b7vho3" sourceRef="Activity_1jhcclq" targetRef="WAIT_RESTAURANT_CALLBACK_TASK">
+      <extensionElements>
+        <jmix:conditionDetails conditionSource="expression" />
+      </extensionElements>
+    </sequenceFlow>
+    <userTask id="WAIT_RESTAURANT_CALLBACK_TASK" name="Ожидание подтверждения ресторана">
+      <extensionElements>
+        <jmix:formData type="no-form" />
+      </extensionElements>
+      <incoming>Flow_0b7vho3</incoming>
+      <outgoing>Flow_1wegar9</outgoing>
+    </userTask>
+    <boundaryEvent id="TIMER_ON_RESTAURANT" attachedToRef="Activity_1jhcclq">
+      <outgoing>Flow_1nr0tno</outgoing>
+      <timerEventDefinition id="TimerEventDefinition_0frilfs">
+        <timeDuration xsi:type="tFormalExpression">PT1M</timeDuration>
+      </timerEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="Flow_1nr0tno" sourceRef="TIMER_ON_RESTAURANT" targetRef="Activity_05ssv9d" />
+    <sequenceFlow id="Flow_0hj5ypr" sourceRef="Activity_05ssv9d" targetRef="Event_0bg2i8n" />
+    <sequenceFlow id="Flow_1wegar9" sourceRef="WAIT_RESTAURANT_CALLBACK_TASK" targetRef="Activity_1kbc9kq" />
+    <sequenceFlow id="Flow_1y4wmt7" sourceRef="Activity_1kbc9kq" targetRef="Activity_16reaiv" />
+    <boundaryEvent id="TIMER_ON_COURIER" attachedToRef="Activity_16reaiv">
+      <outgoing>Flow_1ijc3rj</outgoing>
+      <timerEventDefinition id="TimerEventDefinition_0y49xq3">
+        <timeDuration xsi:type="tFormalExpression">PT1M</timeDuration>
+      </timerEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="Flow_1ijc3rj" sourceRef="TIMER_ON_COURIER" targetRef="Activity_05ssv9d">
+      <extensionElements>
+        <jmix:conditionDetails conditionSource="expression" />
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="Flow_1f3t4wk" sourceRef="Activity_16reaiv" targetRef="COURIER_WAIT_FOUND_TASK" />
+    <userTask id="COURIER_WAIT_FOUND_TASK" name="Ожидание нахождения курьера">
+      <extensionElements>
+        <jmix:formData type="no-form" />
+      </extensionElements>
+      <incoming>Flow_1f3t4wk</incoming>
+      <outgoing>Flow_1f0p9t6</outgoing>
+    </userTask>
+    <endEvent id="Event_0bg2i8n" name="Отмена">
+      <incoming>Flow_0hj5ypr</incoming>
+      <errorEventDefinition id="ErrorEventDefinition_1rfchib" errorRef="ORDER_CANCEL_ERROR" />
+    </endEvent>
+    <sequenceFlow id="Flow_1f0p9t6" sourceRef="COURIER_WAIT_FOUND_TASK" targetRef="Activity_0ow6iy1" />
+    <sequenceFlow id="Flow_1c7s5el" sourceRef="Activity_0ow6iy1" targetRef="COURIER_DELIVERED_TASK" />
+    <userTask id="COURIER_DELIVERED_TASK" name="Ожидание доставки">
+      <extensionElements>
+        <jmix:formData type="no-form" />
+      </extensionElements>
+      <incoming>Flow_1c7s5el</incoming>
+      <outgoing>Flow_123t2l0</outgoing>
+    </userTask>
+    <sequenceFlow id="Flow_123t2l0" sourceRef="COURIER_DELIVERED_TASK" targetRef="Activity_02qbo0m" />
+    <endEvent id="Event_0heiz97" name="Конец">
+      <incoming>Flow_19n7cw3</incoming>
+    </endEvent>
+    <sequenceFlow id="Flow_19n7cw3" sourceRef="Activity_02qbo0m" targetRef="Event_0heiz97" />
+    <task id="Activity_05ssv9d" name="Переверсти заказ в статус отменен">
+      <incoming>Flow_1nr0tno</incoming>
+      <incoming>Flow_1ijc3rj</incoming>
+      <outgoing>Flow_0hj5ypr</outgoing>
+    </task>
+    <serviceTask id="Activity_1kbc9kq" name="Перевести заказ в статус готовится" flowable:async="true" flowable:expression="${cookingRestaurantStep.execute(execution)}" jmix:taskType="springBean" jmix:beanName="cookingRestaurantStep">
+      <extensionElements>
+        <jmix:formData type="no-form" />
+        <jmix:springBean beanName="cookingRestaurantStep" methodName="execute">
+          <jmix:methodParam name="execution" type="org.flowable.engine.delegate.DelegateExecution" isVariable="true">execution</jmix:methodParam>
+        </jmix:springBean>
+      </extensionElements>
+      <incoming>Flow_1wegar9</incoming>
+      <outgoing>Flow_1y4wmt7</outgoing>
+    </serviceTask>
+    <serviceTask id="Activity_16reaiv" name="Опубликовать заказ для курьеров" flowable:async="true" flowable:expression="${requestCourierDeliveryStep.execute(execution)}" jmix:taskType="springBean" jmix:beanName="requestCourierDeliveryStep">
+      <extensionElements>
+        <jmix:formData type="no-form" />
+        <jmix:springBean beanName="requestCourierDeliveryStep" methodName="execute">
+          <jmix:methodParam name="execution" type="org.flowable.engine.delegate.DelegateExecution" isVariable="true">execution</jmix:methodParam>
+        </jmix:springBean>
+      </extensionElements>
+      <incoming>Flow_1y4wmt7</incoming>
+      <outgoing>Flow_1f3t4wk</outgoing>
+    </serviceTask>
+    <serviceTask id="Activity_0ow6iy1" name="Перевести заказ в статус доставляется" flowable:async="true" flowable:expression="${deliveryStep.execute(execution)}" jmix:taskType="springBean" jmix:beanName="deliveryStep">
+      <extensionElements>
+        <jmix:springBean beanName="deliveryStep" methodName="execute">
+          <jmix:methodParam name="execution" type="org.flowable.engine.delegate.DelegateExecution" isVariable="true">execution</jmix:methodParam>
+        </jmix:springBean>
+      </extensionElements>
+      <incoming>Flow_1f0p9t6</incoming>
+      <outgoing>Flow_1c7s5el</outgoing>
+    </serviceTask>
+    <serviceTask id="Activity_02qbo0m" name="Обработать окончание заказа" flowable:async="true" flowable:expression="${orderEndStep.execute(execution)}" jmix:taskType="springBean" jmix:beanName="orderEndStep">
+      <extensionElements>
+        <jmix:springBean beanName="orderEndStep" methodName="execute">
+          <jmix:methodParam name="execution" type="org.flowable.engine.delegate.DelegateExecution" isVariable="true">execution</jmix:methodParam>
+        </jmix:springBean>
+      </extensionElements>
+      <incoming>Flow_123t2l0</incoming>
+      <outgoing>Flow_19n7cw3</outgoing>
+    </serviceTask>
+  </process>
+  <error id="ORDER_CANCEL_ERROR" name="Error: order cancelled" errorCode="Error_Cancel" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_process">
+    <bpmndi:BPMNPlane id="BPMNPlane_process" bpmnElement="ORDER_PROCESS">
+      <bpmndi:BPMNShape id="BPMNShape_startEvent1" bpmnElement="startEvent1">
+        <omgdc:Bounds x="150" y="150" width="30" height="30" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="146" y="187" width="39" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_156l06i_di" bpmnElement="Activity_1m2e02k">
+        <omgdc:Bounds x="230" y="125" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1gq9aa6_di" bpmnElement="Activity_1jhcclq">
+        <omgdc:Bounds x="380" y="125" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_19ciiq9_di" bpmnElement="WAIT_RESTAURANT_CALLBACK_TASK">
+        <omgdc:Bounds x="530" y="125" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0dypjns_di" bpmnElement="COURIER_WAIT_FOUND_TASK">
+        <omgdc:Bounds x="830" y="-10" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1su4ome_di" bpmnElement="Event_0bg2i8n">
+        <omgdc:Bounds x="142" y="292" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="140" y="335" width="40" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0ofz5wn_di" bpmnElement="COURIER_DELIVERED_TASK">
+        <omgdc:Bounds x="530" y="-10" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0heiz97_di" bpmnElement="Event_0heiz97">
+        <omgdc:Bounds x="147" y="12" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="149" y="55" width="32" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1cqe47u_di" bpmnElement="Activity_05ssv9d">
+        <omgdc:Bounds x="380" y="270" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0oh36om_di" bpmnElement="Activity_1kbc9kq">
+        <omgdc:Bounds x="680" y="125" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0y8x7vj_di" bpmnElement="Activity_16reaiv">
+        <omgdc:Bounds x="830" y="125" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_114dy8m_di" bpmnElement="Activity_0ow6iy1">
+        <omgdc:Bounds x="680" y="-10" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0oo7zjv_di" bpmnElement="Activity_02qbo0m">
+        <omgdc:Bounds x="380" y="-10" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1tijmf3_di" bpmnElement="TIMER_ON_COURIER">
+        <omgdc:Bounds x="862" y="187" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_03igwem_di" bpmnElement="TIMER_ON_RESTAURANT">
+        <omgdc:Bounds x="412" y="187" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1llrlkn_di" bpmnElement="Flow_1llrlkn">
+        <di:waypoint x="180" y="165" />
+        <di:waypoint x="230" y="165" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1h005l8_di" bpmnElement="Flow_1h005l8">
+        <di:waypoint x="330" y="165" />
+        <di:waypoint x="380" y="165" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0b7vho3_di" bpmnElement="Flow_0b7vho3">
+        <di:waypoint x="480" y="165" />
+        <di:waypoint x="530" y="165" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1nr0tno_di" bpmnElement="Flow_1nr0tno">
+        <di:waypoint x="430" y="223" />
+        <di:waypoint x="430" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0hj5ypr_di" bpmnElement="Flow_0hj5ypr">
+        <di:waypoint x="380" y="310" />
+        <di:waypoint x="178" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1wegar9_di" bpmnElement="Flow_1wegar9">
+        <di:waypoint x="630" y="165" />
+        <di:waypoint x="680" y="165" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1y4wmt7_di" bpmnElement="Flow_1y4wmt7">
+        <di:waypoint x="780" y="165" />
+        <di:waypoint x="830" y="165" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ijc3rj_di" bpmnElement="Flow_1ijc3rj">
+        <di:waypoint x="880" y="223" />
+        <di:waypoint x="880" y="310" />
+        <di:waypoint x="480" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1f3t4wk_di" bpmnElement="Flow_1f3t4wk">
+        <di:waypoint x="880" y="125" />
+        <di:waypoint x="880" y="70" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1f0p9t6_di" bpmnElement="Flow_1f0p9t6">
+        <di:waypoint x="830" y="30" />
+        <di:waypoint x="780" y="30" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1c7s5el_di" bpmnElement="Flow_1c7s5el">
+        <di:waypoint x="680" y="30" />
+        <di:waypoint x="630" y="30" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_123t2l0_di" bpmnElement="Flow_123t2l0">
+        <di:waypoint x="530" y="30" />
+        <di:waypoint x="480" y="30" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_19n7cw3_di" bpmnElement="Flow_19n7cw3">
+        <di:waypoint x="380" y="30" />
+        <di:waypoint x="183" y="30" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
