@@ -141,6 +141,7 @@ public class OrderView extends StandardView {
 
     private void initNewOrderView(BeforeEnterEvent event) {
         draftOrderDc.setItem(dataContext.create(OrderEntity.class));
+        draftOrderDc.getItem().setBelongsToUser((AppUser) currentAuthentication.getUser());
         QueryParameters queryParameters = event.getLocation().getQueryParameters();
         if (!queryParameters.getParameters().containsKey(RESTAURANT_ID_PATH_PARAM) &&
                 queryParameters.getParameters().get(RESTAURANT_ID_PATH_PARAM).size() != 1) {

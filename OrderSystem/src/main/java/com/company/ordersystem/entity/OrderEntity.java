@@ -13,7 +13,7 @@ import org.springframework.util.Assert;
 import java.util.List;
 
 @JmixEntity
-@Table(indexes = {
+@Table(name = "OrderEntity", indexes = {
         @Index(name = "IDX_ORDER_BELONGS_TO_USER", columnList = "BELONGS_TO_USER_ID")
 })
 @Entity
@@ -31,6 +31,9 @@ public class OrderEntity {
 
     @Column(name = "RESTAURANT_ID")
     private Long restaurantId;
+
+    @Column(name = "IS_CURRENT_ORDER_FOR_USER")
+    private Boolean isCurrentOrderForUser = false;
 
     @JoinColumn(name = "BELONGS_TO_USER_ID")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -52,6 +55,13 @@ public class OrderEntity {
         this.status = status.getId();
     }
 
+    public void setIsCurrentOrderForUser(Boolean isCurrentOrderForUser) {
+        this.isCurrentOrderForUser = isCurrentOrderForUser;
+    }
+
+    public Boolean getIsCurrentOrderForUser() {
+        return isCurrentOrderForUser;
+    }
     public Long getId() {
         return id;
     }

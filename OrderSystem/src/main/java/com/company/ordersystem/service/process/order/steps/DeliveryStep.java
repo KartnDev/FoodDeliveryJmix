@@ -28,6 +28,6 @@ public class DeliveryStep extends AbstractTransactionalStep {
     protected void doTransactionalStep(DelegateExecution execution, OrderEntity order, SaveContext saveContext) {
         order.setStatus(DraftOrderStatus.DELIVERING);
         saveContext.saving(order);
-        doSomeWork(20);
+        doSomeWork();
     }
 }

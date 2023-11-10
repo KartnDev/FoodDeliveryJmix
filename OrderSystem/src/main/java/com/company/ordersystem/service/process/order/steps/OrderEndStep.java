@@ -27,6 +27,7 @@ public class OrderEndStep extends AbstractTransactionalStep {
     @Override
     protected void doTransactionalStep(DelegateExecution execution, OrderEntity order, SaveContext saveContext) {
         order.setStatus(DraftOrderStatus.DONE);
+        order.setIsCurrentOrderForUser(false);
         saveContext.saving(order);
     }
 }

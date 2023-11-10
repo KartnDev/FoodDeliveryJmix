@@ -55,14 +55,11 @@ public abstract class AbstractTransactionalStep extends AbstractStep {
         }
     }
 
-    protected void doSomeWork(int seconds) {
+    protected void doSomeWork() {
         try {
-            Thread.sleep(1000L * seconds);
+            Thread.sleep(3000L);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-    }
-    protected void doSomeWork() {
-        doSomeWork(10);
     }
 }

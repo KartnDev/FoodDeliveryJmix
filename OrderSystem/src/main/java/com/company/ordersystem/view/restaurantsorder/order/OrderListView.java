@@ -11,8 +11,11 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteParameters;
+import io.jmix.core.DataManager;
+import io.jmix.core.LoadContext;
 import io.jmix.core.Messages;
 import io.jmix.core.security.CurrentAuthentication;
+import io.jmix.flowui.component.genericfilter.GenericFilter;
 import io.jmix.flowui.component.grid.DataGrid;
 import io.jmix.flowui.kit.action.ActionPerformedEvent;
 import io.jmix.flowui.kit.action.BaseAction;
@@ -22,6 +25,9 @@ import io.jmix.flowui.view.navigation.ViewNavigationSupport;
 import jakarta.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
+
+import java.util.List;
+import java.util.function.Function;
 
 import static com.company.ordersystem.view.OrderSystemPathConstants.*;
 
@@ -34,14 +40,11 @@ public class OrderListView extends StandardListView<OrderEntity> {
     @Autowired
     private ViewNavigationSupport viewNavigationSupport;
     @Autowired
-    private CurrentAuthentication currentAuthentication;
-    @Autowired
     private Messages messages;
     @ViewComponent
     private DataGrid<OrderEntity> ordersDataGrid;
     @ViewComponent("ordersDataGrid.viewHistory")
     private BaseAction viewHistory;
-
 
     @Subscribe("ordersDataGrid.viewHistory")
     public void onDraftOrdersDataGridViewHistory(final ActionPerformedEvent event) {
@@ -49,11 +52,6 @@ public class OrderListView extends StandardListView<OrderEntity> {
         Assert.notNull(selectedOrder, "Selected item is null");
         viewNavigationSupport.navigate(OrderView.class,
                 new RouteParameters(ORDER_ID_PATH_PARAM, String.valueOf(selectedOrder.getId())));
-    }
-
-    @Subscribe(id = "draftOrdersDl", target = Target.DATA_LOADER)
-    public void onDraftOrdersDlPreLoad(final CollectionLoader.PreLoadEvent<OrderEntity> event) {
-        event.getSource().setParameter("currentUser", currentAuthentication.getUser());
     }
 
     @Subscribe

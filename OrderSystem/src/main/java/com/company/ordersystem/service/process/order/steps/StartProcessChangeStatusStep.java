@@ -27,6 +27,7 @@ public class StartProcessChangeStatusStep extends AbstractTransactionalStep {
     @Override
     protected void doTransactionalStep(DelegateExecution execution, OrderEntity order, SaveContext saveContext) {
         order.setStatus(DraftOrderStatus.NEW_ORDER);
+        order.setIsCurrentOrderForUser(true);
         saveContext.saving(order);
         doSomeWork();
     }
