@@ -8,6 +8,7 @@ import org.springframework.lang.Nullable;
 public enum DraftOrderStatus implements EnumClass<String> {
 
     NEW_ORDER("NEW_ORDER"),
+    PAID("PAID"),
     WAIT_FOR_RESTAURANT("WAIT_FOR_RESTAURANT"),
     RESTAURANT_COOKING("RESTAURANT_COOKING"),
     COURIER_FINDING("COURIER_FINDING"),
