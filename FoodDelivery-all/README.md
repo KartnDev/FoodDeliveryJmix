@@ -154,8 +154,8 @@ _Ниже комментарии, которые пояснят некотору
 * **Использование фреймворков**. <br/>
     Так как мы используем наши любимые фреймворки в построении подсистем, то у нас есть доступ к всем их плюшкам. Однако,
     отсюда и вытекает один интересный момент, что при использовании монолитных фреймворков,
-    вас поощрают за написание сложных систем со сложной бизнес логикой, вследствие чего, отдельная система редко получается
-    дейстительно по размерах подходящей к термину "микро" сервис.
+    вас поощряют за написание сложных систем со сложной бизнес логикой, вследствие чего, отдельная система редко получается
+    действительно по размерах подходящей к термину "микро" сервис.
 
 ## Плюсы, минусы и цели архитектуры
 
@@ -437,24 +437,25 @@ _Но вы думаете что я буду использовать прост
 Этот подход решает множество проблем, связанных как с устойчивостью, так и с минимизацией межсистемных коммуникаций.
 
 ### Реализация в двух словах
-Изначально статья должна была быть детальной, но если затянуть с объяснением всего, то кажется ее бы можно было
-изложить только в 12 часовой видос на youtube или небольшую книгу. Потому буду давать фрагменты кода и комментарии. Начнем сначала.
+_Изначально статья должна была быть детальной, но если затянуть с объяснением всего, то кажется ее бы можно было
+изложить только в 12 часовой видос на youtube или небольшую книгу._ **Потому буду давать фрагменты кода и комментарии.**
+Начнем сначала.
 
 #### Создание базового функционала Restaurant System
 
-Нужен CRUD для ресторанов, еды и меню внутри ресторана. Так как мы пишем на Jmix - у нас есть возможность написать полноценный сайт, а не 
+Нужен **CRUD для ресторанов, еды и меню внутри ресторан**а. Так как мы пишем на Jmix - у нас есть возможность написать **полноценный сайт**, а не 
 использовать Rest API и какой-нибудь Postman.
 
 Сущности первой необходимости:
-- Restaurant
-- RestaurantMenu
-- RestaurantMenuItem
+- **Restaurant**
+- **RestaurantMenu**
+- **RestaurantMenuItem**
 
 Пропущу код связанный с созданием UI, лишь скажу, что мы создали:
-- экран(да, да, именно экран, так страницы называются в Jmix) списка ресторанов
-- экран настройки ресторана для админа
-- экран ресторана с деталями(список еды, список меню)
-- экран деталей еды и экран деталей меню
+- **экран**(да, да, именно экран, так страницы называются в Jmix) **списка ресторанов**
+- **экран настройки ресторана для админа**
+- **экран ресторана с деталями** (список еды, список меню)
+- **экран деталей еды и экран деталей меню**
 
 Прикрутим `Rest` для того, чтобы можно было из системы **Заказов** доставать список ресторанов и их содержимого:
 <details>
@@ -472,23 +473,11 @@ public class RestaurantController {
     private final FetchPlans fetchPlans;
     private final RestaurantMenuRepository restaurantMenuRepository;
 
-    public RestaurantController(RestaurantRepository restaurantRepository,
-                                DataManager dataManager,
-                                AttachmentService attachmentService,
-                                FetchPlans fetchPlans,
-                                RestaurantMenuRepository restaurantMenuRepository) {
-        this.restaurantRepository = restaurantRepository;
-        this.dataManager = dataManager;
-        this.attachmentService = attachmentService;
-        this.fetchPlans = fetchPlans;
-        this.restaurantMenuRepository = restaurantMenuRepository;
-    }
-
     @GetMapping("/restaurants")
     public List<RestaurantDTO> listRestaurants() {
         return StreamSupport.stream(restaurantRepository.findAll().spliterator(), false)
                 .map(restaurant -> {
-                    var dto = dataManager.create(RestaurantDTO.class);
+                    var dto = new RestaurantDTO();
                     dto.setId(restaurant.getId());
                     dto.setName(restaurant.getName());
                     dto.setDescription(restaurant.getDescription());
@@ -501,7 +490,7 @@ public class RestaurantController {
     @GetMapping("/restaurants/{id}")
     public RestaurantDTO getRestaurant(@PathVariable Long id) {
         Restaurant restaurant = restaurantRepository.getById(id);
-        var dto = dataManager.create(RestaurantDTO.class);
+        var dto = new RestaurantDTO();
         dto.setId(restaurant.getId());
         dto.setName(restaurant.getName());
         dto.setDescription(restaurant.getDescription());
@@ -511,12 +500,7 @@ public class RestaurantController {
 
     @GetMapping("/restaurants/{restaurantId}/menus")
     public List<RestaurantMenuDTO> listRestaurants(@PathVariable Long restaurantId) {
-        var fetchPlan = fetchPlans.builder(RestaurantMenu.class)
-                .addFetchPlan("restaurantMenu-with-items-fetch-plan")
-                .build();
-        var restaurantMenuSpliterator = restaurantMenuRepository.findRestaurantMenuByRestaurantId(restaurantId, fetchPlan)
-                .spliterator();
-        return StreamSupport.stream(restaurantMenuSpliterator, false)
+        return restaurantMenuRepository.findRestaurantMenuByRestaurantId(restaurantId)
                 .map(menu -> {
                     var menuDTO = dataManager.create(RestaurantMenuDTO.class);
                     menuDTO.setId(menu.getId());
@@ -530,26 +514,293 @@ public class RestaurantController {
 ```
 </details>
 
-Итак, как только мы написали все необходимые эндпоинты, можем перейти к настройке ресторанов.
-Создадим пару ресторанов и еду в них, чтобы было с чем работать в системе заказов.
+Итак, как только **мы написали все необходимые эндпоинты**, можем перейти к **настройке ресторанов**.
+**Создадим пару ресторанов и еду в них**, чтобы было с чем работать в системе заказов.
 
-Предлагаю создать StarBucks, а то в последнее время его не хватает. Хотя нет, чего дейстительно не хватает это Сбер Пиццы.
+Предлагаю создать **StarBucks**, а то в последнее время его не хватает. _Хотя нет, чего действительно не хватает это **Сбер Пиццы**._
 Реализуем же фантазии, кто знает, возможно это станет правдой...
 
-<img alt="restaurants-list.png" height="50%" src="public/restaurants-list.png" width="70%"  style="border: 2px solid  gray;"/>
+<img alt="restaurants-list.png" height="50%" src="public/restaurants-list.png" width="70%"  style="border: 2px solid  gray; border-radius: 10px;"/>
 
 Заполним рестораны. Остановимся только на сберпицце)
 
 1. Детали </br>
-    <img alt="restaurant-detail-1.png" height="30%" src="public/restaurant-detail-1.png" width="60%"  style="border: 2px solid  gray;"/>
+    <img alt="restaurant-detail-1.png" height="30%" src="public/restaurant-detail-1.png" width="60%"  style="border: 2px solid  gray; border-radius: 10px;"/>
 2. Еда </br>
-    <img alt="restaurant-detail-2.png" height="30%" src="public/restaurant-detail-2.png" width="60%"  style="border: 2px solid  gray;"/>
+    <img alt="restaurant-detail-2.png" height="30%" src="public/restaurant-detail-2.png" width="60%"  style="border: 2px solid  gray; border-radius: 10px;"/>
 3. Меню, они же табы для клиентов </br>
-    <img alt="restaurant-detail-3.png" height="30%" src="public/restaurant-detail-3.png" width="60%"  style="border: 2px solid  gray;"/>
+    <img alt="restaurant-detail-3.png" height="30%" src="public/restaurant-detail-3.png" width="60%"  style="border: 2px solid  gray; border-radius: 10px;"/>
 
 Думаю со сбера хватит. Переходим к **OrderService**.
 
-На этом этапе нам необходим лишь функционал создания корзины, все остальное будет реализовано в следующих шагах с бизнес-процессом.
+На этом этапе нам необходим лишь **функционал создания корзины**, все остальное будет реализовано в следующих шагах с бизнес-процессом.
 
-* Создадим общий API пакет, который будет содержать описание всех рест моделей (на самом деле он уже есть и все модели выбаются с Rest-а).
+* Создадим **общий API пакет**, который будет содержать описание всех **REST моделей** (на самом деле он уже есть и все модели выбаются с Rest-а).
 * Добавим необходимые сущности для первичной работы с корзиной:
+  * **OrderEntity** - сама сущность заказа
+  * **RestaurantFoodItemReplica** - реплика еды в текущем состоянии. Не буду слишком долго вдаваться в микросервисные паттерны, но в кратце такие сущности 
+  обычно хранятся как json документы, которые **уменьшают нагрузку** и **связность между подсисетмами**. Мы для простоты будем хранить их в ACID в Postgres
+  * **FoodItemCountedEntity** - Сущность, которая хранит конкретную еду и счет сколько еды было выбрано
+* **Добавим UI для корзины.** Надо будет отобразить список ресторанов на выбор. И тут происходит самое интересное!
+_Нам не нужна асинхронность, чтобы отобразить список ресторанов, так как банально юзер и так ждет, пока список загрузится._
+Когда загрузятся рестораны, а клиент выберет нужный ресторан, он пойдет в конкретный ресторан и сие действие повториться, но уже для еды и меню.
+Давайте посмотрим на клиент для **RestaurantSystem** внутри системы заказов:
+    <details>
+      <summary>RestaurantClient</summary>
+    
+    ```java
+      @Component
+      public class RestaurantClient extends AbstractClient {
+    
+        public List<RestaurantDTO> listRestaurants(String subjectToken) {
+            String url = MessageFormat.format("{0}/api/v1/restaurants", caclRestaurantUrl());
+            return getApi(url, HttpMethod.GET, new ParameterizedTypeReference<List<RestaurantDTO>>() {}, null, subjectToken);
+        }
+    
+        public RestaurantDTO getRestaurantById(Long restaurantId, String subjectToken) {
+            String url = MessageFormat.format("{0}/api/v1/restaurants/{1,number,#}", caclRestaurantUrl(), restaurantId);
+            return getApi(url, HttpMethod.GET, new ParameterizedTypeReference<RestaurantDTO>() {}, null, subjectToken);
+        }
+    
+        public List<RestaurantMenuDTO> listRestaurantMenus(Long restaurantId, String subjectToken) {
+            String url = MessageFormat.format("{0}/api/v1/restaurants/{1,number,#}/menus", caclRestaurantUrl(), restaurantId);
+            return getApi(url, HttpMethod.GET, new ParameterizedTypeReference<List<RestaurantMenuDTO>>() {}, null, subjectToken);
+        }
+    }
+    ```
+    </details>
+    
+    Опустим лишние детали, нас тут интересует только то, что все **"стартовые"** запросы процесса по доставке еды могут быть синхронные, тк
+    используются только на **стороне юзера для UI**.
+
+#### Перейдем к проверке работы корзины, сделаем заказ
+1. **Выберем ресторан**. КОНЕЧНО ЖЕ СБЕР ПИЦЦА </br>
+   <img alt="order-detail-1.png" height="30%" src="public/order-detail-1.png" width="60%"  style="border: 2px solid  gray; border-radius: 10px;"/>
+2. **Удостоверимся, что все меню и еда пришла верная** </br>
+   <img alt="order-detail-2.png" height="30%" src="public/order-detail-2.png" width="60%"  style="border: 2px solid  gray; border-radius: 10px;"/>
+3. Соберем инвестиционный портфель. Ой, то есть **соберем корзину еды**, конечно же. </br>
+   <img alt="order-detail-3.png" height="30%" src="public/order-detail-3.png" width="60%"  style="border: 2px solid  gray; border-radius: 10px;"/>
+
+Отлично, корзина готова и можно приступать к самому интересному - **бизнес процессу**, который мы обозначили пару топиков назад.
+
+### Бизнес процесс всему голова!
+
+Так как у нас есть `Flowable` и есть **реальный бизнес процесс**, который можно описать, **то построим всю доставку еды на BPMN**:
+![order-bpmn.png](public/order-bpmn.png)
+
+Все те же шаги, что и в том красивом бизнес процессе. Осталось дело за малым - привязать все `ServiceTask` (те что с колесиком) к Java коду.
+
+#### Больше деталей: как UserTask решит все мои проблемы
+Многие задумались, а как я буду решать проблему, когда возникает **некоторое ожидание**, когда мы ждем **готовку еды** или когда **ищем курьера**?
+
+**И тут самая главная идея BPMN нам помогает**! 
+
+> **UserTask** - это объект нотации bpmn, когда бизнес процесс перестает исполняться и встревает на UserTask в
+ожидании, когда таску продолжат. То есть, мы пойдем исполнять по очереди **java код** для каждой сервис таски, **пока не наткнемся на первую UserTask-у**.
+Чтобы **"разморозить"** исполнение бизнес процесса, нам понадобиться **специально найти эту таски и сказать "а-ну продолжайся!"**.
+
+_Короткий экскурс в bpmn окончен_. Погнали к делу:
+
+1. Как только наш **заказчик подтвердил свою корзину**, **мы начнем бизнес-процесс** и присвоем ему статус НАШЕЙ КОРЗИНЫ (заказа).
+Получается, зная в каком мы инстансе бизнес-процесса, мы знаем и номер заказа. Супер гут.
+
+<img alt="super-good-tinkoff.png" height="30%" src="public/super-good-tinkoff.png" width="30%" style="border: 2px solid  gray; border-radius: 10px;"/>
+
+Остается только **запустить процесс из экрана**, когда **заказчик нажимает кнопку подтверждения**
+(я тут нарочно избегаю слово клиент во избежание путаницы со словом SomeHttpClient).
+```java
+    public ProcessInstance startOrderProcess(String orderId) {
+        AppUser appUser = (AppUser) currentAuthentication.getUser();
+
+        Map<String, Object> processVariables = Map.of(
+                PROCESS_USER_KEY, appUser.getUsername()
+        );
+        return runtimeService.startProcessInstanceByKey(ORDER_PROCESS_SCHEMA_ID, orderId, processVariables);
+    }
+
+```
+
+И сразу пройдем к первому шагу. **Присваиваем ему статус нового и сохраняем в транзакционный контекст**.
+
+```java
+    @Override
+    protected void doTransactionalStep(DelegateExecution execution, OrderEntity order, SaveContext saveContext) {
+        order.setStatus(DraftOrderStatus.NEW_ORDER);
+        saveContext.saving(order);
+        doSomeWork();
+    }
+```
+
+#### Асинхронные ServiceTask и bpmn паттерн **Request-Wait-ResponseAfter**
+
+Далее все наши `ServiceTask` **будут исполняться в отдельных потоках**, будут помечены **асинхронным флагом** и принадлежать к **разным транзакциям**, тем самым
+_**мы даем гарантии, что наш когда будет всегда максимально изолирован и устойчив к ошибкам**_. Да, да, бизнес процесс можно еще и откатывать)
+
+Не буду освещать все шаги, так как они **однотипны**, лишь **рассмотрим один общий паттерн**, по которому проходит весь бизнес процесс:
+1. Мы делаем Http запрос в **асинхронной** `ServiceTask` в другую систему с запросов "сготовьте еду в таком то ресторане"
+
+    <details>
+      <summary>RequestRestaurantCookStep</summary>
+   
+   ```java
+        @Service
+        public class RequestRestaurantCookStep extends AbstractTransactionalStep {
+            private final Logger log = LoggerFactory.getLogger(RequestRestaurantCookStep.class);
+            private final RestaurantClient restaurantClient;
+            private final OrderService orderService;
+            
+            @Override
+            protected void doTransactionalStep(DelegateExecution execution, OrderEntity order, SaveContext saveContext) {
+                String username = getVariable(execution, PROCESS_USER_KEY);
+                String subjectToken = exchangeOidcTokenForUser(username);
+                String result = systemAuthenticator.withUser(username,
+                        () -> restaurantClient.publishRestaurantCookRequest(order.getRestaurantId(), orderService.convert(order), subjectToken));
+                log.info("Result from restaurant system for cook request: " + result);
+                order.setStatus(DraftOrderStatus.WAIT_FOR_RESTAURANT);
+                saveContext.saving(order);
+                doSomeWork();
+            }
+        }
+    ```
+    </details>
+
+   <details>
+   <summary>RestaurantClient#publishRestaurantCookRequest</summary>
+   
+   ```java
+    public String publishRestaurantCookRequest(Long restaurantId, OrderDTO orderDTO, String subjectToken) {
+        String url = MessageFormat.format("{0}/api/v1/restaurants/{1,number,#}/cook", restaurantUrl, restaurantId);
+        return getApi(url, HttpMethod.POST, new ParameterizedTypeReference<String>() {}, orderDTO, subjectToken);
+    }
+    ```
+    </details>
+
+2. При обработке запроса на готовку в системе ресторанов **сохраняется запрос** для дальнейшего отображения админам.
+   <details>
+   <summary>RestaurantController#getRestaurantCookRequest</summary>
+
+   ```java
+    @PostMapping("/restaurants/{restaurantId}/cook")
+    public String getRestaurantCookRequest(@PathVariable Long restaurantId, @RequestBody OrderDTO orderDTO) {
+        cookOrderService.submitNewCookOrderFromDTO(orderDTO);
+        // we will not bring case that restaurant will not cook, placeholder response
+        return "Accepted";
+    }
+    ```
+    </details>
+
+   <details>
+   <summary>CookOrderService#submitNewCookOrderFromDTO</summary>
+
+   ```java
+    public void submitNewCookOrderFromDTO(OrderDTO orderDTO) {
+   
+        var cookOrderRequest = create(CookOrderRequest.class);
+        cookOrderRequest.setOrderId(orderDTO.getOriginOrderId());
+        cookOrderRequest.setIsDone(false);
+        cookOrderRequest.setRestaurant(restaurantRepository.getById(orderDTO.getRestaurantId()));
+        cookOrderRequest.setCookingItems(createCookingListFromDTO(cookOrderRequest, orderDTO));
+   
+        save(cookOrderRequest);
+    }
+    ```
+    </details>
+3. Админ ресторана заходит в список задач на готовку, берется за нее, тем самым **отправляет обратный Http запрос** обратно в систему заказов.
+    <details>
+       <summary>OrderProcessController#continueOrderRestaurantStep</summary>
+    
+   ```java
+        @PostMapping("/orders/{orderId}/restaurantstep/{restaurantId}")
+        public void continueOrderRestaurantStep(@PathVariable String orderId, @PathVariable String restaurantId) {
+            orderProcessManager.continueProcessByRestaurantStep(orderId, restaurantId);
+        }
+   ```
+    </details>
+4. **Когда приходит Http запрос от системы ресторанов (ответ на запрос о готовке) - мы продолжаем наш бизнес-процесс далее**
+    <details>
+       <summary>OrderProcessManager#continueProcessByRestaurantStep</summary>
+
+   ```java
+        public void continueProcessByRestaurantStep(String orderId, String restaurantId) {
+            OrderEntity order = orderRepository.getById(Long.parseLong(orderId));
+            if (!order.getRestaurantId().toString().equals(restaurantId)) {
+                throw new RuntimeException(MessageFormat.format("Illegal access for task(Order No.){0} exception, restaurantId {1}", orderId, restaurantId));
+            }
+            continueUserTaskInProcess(orderId, "WAIT_RESTAURANT_CALLBACK_TASK");
+        }
+    
+        private void continueUserTaskInProcess(String orderId, String taskDefinitionId) {
+            ProcessInstance processInstance = runtimeService.createProcessInstanceQuery()
+                    .processInstanceBusinessKey(orderId)
+                    .singleResult();
+            Task restaurantTask = taskService.createTaskQuery()
+                    .processInstanceId(processInstance.getId())
+                    .active()
+                    .taskDefinitionKey(taskDefinitionId)
+                    .singleResult();
+            taskService.complete(restaurantTask.getId());
+        }
+   ```
+    </details>
+5. СУУУУПЕР ГУД. **Request-Wait-ResponseAfter** реализован в бизнес-процессе. 
+6. Далее делаем то же самое для шагов с поиском курьера и **подтверждением окончания доставки от курьера**. 
+
+_Усложнять статью не буду, потому опущу код, связанный с точно такими же шагами с курьером и сервис-тасками, которые просто 
+меняют статус заказа._
+
+
+## Результат демо
+
+!!!!!!!!!!!!!!!!!!!!!!!!Добавить сюда гиффку!
+
+Подведем промежуточные итоги для текущего демо проекта:
+1. Мы построили п**роект доставки еды в стиле Self-Contained Systems**;
+2. Проект получился весьма **устойчивым к ошибкам**;
+3. **Связность** между подсистемами **минимальна**;
+4. Большинство **поинтов философии SCS были поддержаны** (в том числе асинхронные и отказоустойчивые коммуникации);
+5. **По времени** это заняло **сущие копейки**.
+
+#### А теперь все бежим переписывать наши монолиты на Self-Contained Systems
+<br/>
+<img alt="tinkoff-sarcasm.png" height="30%" src="public/tinkoff-sarcasm.png" width="30%" style="border: 2px solid  gray; border-radius: 10px;"/>
+
+Но все же! Мы не использовали `iframe` и проект получился **не очень связным в UI** и все связи находятся только на уровне коммуникаций.
+Предлагаю вкратце рассмотреть пример, **как можно написать SCS при помощи iframe.**
+
+## Альтернативный вариант Self-Contained Systems через iframe 
+Данный вариант построения самодостаточных систем является более **каноничным**, тк на сайте в первых поинтах сразу упоминают iframe. 
+**Хоть я и не считаю, что такой подход имеет большой потенциал** (достаточно трудно найти подходящий бизнес-сценарий), **мы обязаны его
+рассмотреть.** 
+
+Перейдем на **Amazon.com**, возьмем как пример веб магазина, у которого существует множество поддоменов(подсистем):
+
+1. В меню борде мы видим список разных **ссылок на подсистемы**, которые могут быть реализованы **отдельными "монолитами".**
+Их мы и выделим в качестве подсистем. Но для подсистем надо иметь общий layout (common space).
+   <br/>
+   <img alt="amazon-web.png" height="70%" width="70%" src="public/amazon-web.png" style="border: 2px solid gray; border-radius: 10px;"/>
+2. В то время как для контента подсистем надо выделить **большое пространство**, где мы будем **отображать UI выделенной подсистемы**, которую пользователь
+выберет
+3. Следовательно, **декомпозиция на подсистемы с общей UI системой будет выглядеть примерно так**:
+    <br/>
+    <img alt="amazon-web-deconstructed.png" height="70%" src="public/amazon-web-deconstructed.png" width="70%" style="border: 2px solid gray; border-radius: 10px;"/>
+
+Что происходит когда пользователь заходит на такой сайт?
+
+1. Загружается страница с **общим layout** и каким-то placeholder контентом по центру, где у нас **пространство iframe**.
+Либо мы сразу подгружаем дефолтную подсистему для пользователя в iframe space
+2. В меню есть **ссылки** при нажатии на которые мы подменяем iframe-ы, каждый из которых ведет в свою подсистему.
+3. При подгрузке iframe так же прокидываются **cookie**, поэтому пользователь, залогинившийся в одну общую систему, считай
+залогинился во все.
+
+Пример я взял из [видео-ряда](https://youtu.be/xkQ9VaNTwxM?si=2VijRpPZajt0d3P3) англоязычного [контент-мейкера](https://www.youtube.com/@SoftwareDeveloperDiaries) с ютуба.
+
+## Подведем итоги
+
+* Чуть-чуть углубились в Self-Contained Systems;
+* Рассмотрели ~~шизотеорию~~ философию комьюнити;
+* Создали демо приложение доставки еды и разобрали альтернативный вариант написания Self-Contained Systems, который
+более близок к исходному комьюнити и Innoq;
+
+Надеюсь, я развлек вас сколько-то интересным контентом, знания к знаниям архитектур ПО добавился еще один инструмент. 
+
+<img alt="tinkoff-sinner.png" height="30%" src="public/tinkoff-sinner.png" width="30%" style="border: 2px solid  gray; border-radius: 10px;"/>
