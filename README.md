@@ -1,18 +1,28 @@
 # Food Delivery Jmix
+![food-delivery-icon.png](FoodDelivery-all/public/food-delivery-icon.png)
+
+The FoodDelivery project is a demonstration application built on the principles of 
+Self-Contained Systems (SCS), showcasing the integration of Jmix and Spring frameworks.
+This project aims to provide a comprehensive solution for managing food delivery operations, 
+encompassing order management, menu customization, delivery logistics, and customer interaction.
+
+## Getting started
+
+To start the application you need to follow the guidelines:
+1. [Configure project](docs/project-configuration/README.md)
+2. [Understand use case](docs/project-usecase/README.md)
+
+## Why
+
+This is a common example how to create big projects with Self-Contained Systems architecture using `Jmix`.
+
+## Architecture of Food Delivery
+
+That is not a real one business application. Its demonstration.
+
+Below is an explanation of the high level architecture of the food delivery with hook/async communications.
+![food-delivery-communication-architecture.png](FoodDelivery-all/public/food-delivery-communication-architecture.png)
 
 
-
-
-## Food delivery and restaurant management
-
-To start demo-delivering, we also need to do some pre-settings:
-1. Go to the restaurant system
-2. As admin, allocate new restaurants for management
-3. Go to restaurants and select any of the list
-4. Fill a restaurant by its menu
-5. When all restaurants are configured, we can start delivering
-
-
-## Delivery steps (for local development)
-1. Go to the Delivery System at **delivery.io** or **delivery.io:8081** (depends on your host settings)
-2. Go to the 
+## Simple demo
+![demo-preview.gif](FoodDelivery-all/public/demo-preview.gif)
