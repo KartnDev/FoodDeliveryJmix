@@ -14,7 +14,7 @@ To start the application you need to follow the guidelines:
 
 ## Why
 
-This is a common example how to create big projects with Self-Contained Systems architecture using `Jmix`.
+This is a common example how to create big projects line food-delivery with Self-Contained Systems architecture using `Jmix`.
 
 ## Architecture of Food Delivery
 
