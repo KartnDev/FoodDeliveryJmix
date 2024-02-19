@@ -23,11 +23,6 @@ public class OrderProcessController {
         orderProcessManager.continueProcessByRestaurantStep(orderId, restaurantId);
     }
 
-    @PostMapping("/orders/{orderId}/paidStep")
-    public void continueOrderRestaurantStep(@PathVariable String orderId) {
-        orderProcessManager.continueByPaid(orderId);
-    }
-
     @PostMapping("/orders/{orderId}/courierFoundStep/")
     public void continueOrderCourierFoundStep(@PathVariable String orderId) {
         orderProcessManager.continueProcessByCourierFoundStep(orderId);

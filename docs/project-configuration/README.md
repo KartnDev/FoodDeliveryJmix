@@ -110,6 +110,7 @@ To set up Keycloak for the Food Delivery application, follow these manual config
     - Permit all Web origins by setting the value as "+".<br/>
 
    <img alt="login-settings.png" src="public/keycloak-step/login-settings.png" width="50%"/><br/>
+   <img alt="login-setting-upd.png" src="public/keycloak-step/login-setting-upd.png" width="50%"/>
 9. Add a **realm role** named "system-full-access".<br/>
    <img alt="realm-role-sys-full-access.png" src="public/keycloak-step/realm-role-sys-full-access.png" width="50%"/><br/>
 10. Add a realm **client-scope**.<br/>

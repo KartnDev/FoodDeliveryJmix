@@ -72,8 +72,4 @@ public class OrderProcessManager {
                 .singleResult();
         taskService.complete(restaurantTask.getId());
     }
-
-    public void continueByPaid(String orderId) {
-        continueUserTaskInProcess(orderId, "WAIT_FOR_PAY");
-    }
 }

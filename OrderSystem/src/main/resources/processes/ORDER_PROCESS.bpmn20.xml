@@ -27,7 +27,7 @@
           <jmix:methodParam name="execution" type="org.flowable.engine.delegate.DelegateExecution" isVariable="true">execution</jmix:methodParam>
         </jmix:springBean>
       </extensionElements>
-      <incoming>Flow_0ke7ncz</incoming>
+      <incoming>Flow_0ruw89u</incoming>
       <outgoing>Flow_0b7vho3</outgoing>
     </serviceTask>
     <sequenceFlow id="Flow_0b7vho3" sourceRef="Activity_1jhcclq" targetRef="WAIT_RESTAURANT_CALLBACK_TASK">
@@ -132,41 +132,11 @@
       <incoming>Flow_123t2l0</incoming>
       <outgoing>Flow_19n7cw3</outgoing>
     </serviceTask>
-    <sequenceFlow id="Flow_0ruw89u" sourceRef="Activity_1m2e02k" targetRef="WAIT_FOR_PAY" />
-    <userTask id="WAIT_FOR_PAY" name="" jmix:assigneeSource="expression">
-      <incoming>Flow_0ruw89u</incoming>
-      <outgoing>Flow_1dma8b4</outgoing>
-    </userTask>
-    <sequenceFlow id="Flow_1dma8b4" sourceRef="WAIT_FOR_PAY" targetRef="Activity_0ac8j60">
-      <extensionElements>
-        <jmix:conditionDetails conditionSource="userTaskOutcome" />
-      </extensionElements>
-    </sequenceFlow>
-    <sequenceFlow id="Flow_0ke7ncz" sourceRef="Activity_0ac8j60" targetRef="Activity_1jhcclq" />
-    <serviceTask id="Activity_0ac8j60" flowable:expression="${paidStep.execute(execution)}" jmix:taskType="springBean" jmix:beanName="paidStep">
-      <extensionElements>
-        <jmix:conditionDetails conditionSource="userTaskOutcome" />
-        <jmix:springBean beanName="paidStep" methodName="execute">
-          <jmix:methodParam name="execution" type="org.flowable.engine.delegate.DelegateExecution" isVariable="true">execution</jmix:methodParam>
-        </jmix:springBean>
-      </extensionElements>
-      <incoming>Flow_1dma8b4</incoming>
-      <outgoing>Flow_0ke7ncz</outgoing>
-    </serviceTask>
+    <sequenceFlow id="Flow_0ruw89u" sourceRef="Activity_1m2e02k" targetRef="Activity_1jhcclq" />
   </process>
   <error id="ORDER_CANCEL_ERROR" name="Error: order cancelled" errorCode="Error_Cancel" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_process">
     <bpmndi:BPMNPlane id="BPMNPlane_process" bpmnElement="ORDER_PROCESS">
-      <bpmndi:BPMNShape id="BPMNShape_startEvent1" bpmnElement="startEvent1">
-        <omgdc:Bounds x="-165" y="150" width="30" height="30" />
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds x="-169" y="187" width="39" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_156l06i_di" bpmnElement="Activity_1m2e02k">
-        <omgdc:Bounds x="-70" y="125" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1gq9aa6_di" bpmnElement="Activity_1jhcclq">
         <omgdc:Bounds x="380" y="125" width="100" height="80" />
       </bpmndi:BPMNShape>
@@ -211,11 +181,15 @@
         <omgdc:Bounds x="380" y="-10" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_07oa4le_di" bpmnElement="WAIT_FOR_PAY">
-        <omgdc:Bounds x="100" y="125" width="100" height="80" />
+      <bpmndi:BPMNShape id="Activity_156l06i_di" bpmnElement="Activity_1m2e02k">
+        <omgdc:Bounds x="240" y="125" width="100" height="80" />
+        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0c566w6_di" bpmnElement="Activity_0ac8j60">
-        <omgdc:Bounds x="230" y="125" width="100" height="80" />
+      <bpmndi:BPMNShape id="BPMNShape_startEvent1" bpmnElement="startEvent1">
+        <omgdc:Bounds x="145" y="150" width="30" height="30" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="141" y="187" width="39" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1tijmf3_di" bpmnElement="TIMER_ON_COURIER">
         <omgdc:Bounds x="862" y="187" width="36" height="36" />
@@ -224,8 +198,8 @@
         <omgdc:Bounds x="412" y="187" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_1llrlkn_di" bpmnElement="Flow_1llrlkn">
-        <di:waypoint x="-135" y="165" />
-        <di:waypoint x="-70" y="165" />
+        <di:waypoint x="175" y="165" />
+        <di:waypoint x="240" y="165" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0b7vho3_di" bpmnElement="Flow_0b7vho3">
         <di:waypoint x="480" y="165" />
@@ -273,17 +247,7 @@
         <di:waypoint x="183" y="30" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0ruw89u_di" bpmnElement="Flow_0ruw89u">
-        <di:waypoint x="30" y="165" />
-        <di:waypoint x="100" y="165" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1dma8b4_di" bpmnElement="Flow_1dma8b4">
-        <di:waypoint x="200" y="165" />
-        <di:waypoint x="215" y="165" />
-        <di:waypoint x="215" y="190" />
-        <di:waypoint x="230" y="190" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0ke7ncz_di" bpmnElement="Flow_0ke7ncz">
-        <di:waypoint x="330" y="165" />
+        <di:waypoint x="340" y="165" />
         <di:waypoint x="380" y="165" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
