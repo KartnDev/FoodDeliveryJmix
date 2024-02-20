@@ -86,6 +86,11 @@ If you prefer not to use port numbers in the hostnames (e.g., "courier.io:8081",
 Choose the option that best suits your preferences and environment for seamless 
 operation of the Food Delivery application.
 
+## Local Development
+
+Before running the applications, it's important to remember that certain systems rely on specific modules. 
+Ensure smooth development by publishing add-ons into the local Maven repository.
+
 ## Configuring Keycloak
 
 To set up Keycloak for the Food Delivery application, follow these manual configuration steps:

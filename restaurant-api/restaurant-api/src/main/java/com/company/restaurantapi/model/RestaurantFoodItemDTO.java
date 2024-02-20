@@ -16,30 +16,18 @@ public class RestaurantFoodItemDTO implements HasIcon {
     @JmixId
     private UUID id;
 
-    @Getter
     @InstanceName
     private String name;
 
     private byte[] icon;
 
-    @Getter
     private Integer price;
 
-    @Getter
     private String description;
 
     @Override
     public String getAttachmentName() {
         return name + "_item_icon.png";
-    }
-
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     @Override
@@ -52,8 +40,32 @@ public class RestaurantFoodItemDTO implements HasIcon {
         this.icon = icon;
     }
 
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
     public void setPrice(Integer price) {
         this.price = price;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public void setDescription(String description) {

@@ -10,8 +10,6 @@ import lombok.Setter;
 
 import java.util.List;
 
-@Getter
-@Setter
 @JmixEntity(name = "rstaddn_RestaurantMenuDTO")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RestaurantMenuDTO {
@@ -23,4 +21,29 @@ public class RestaurantMenuDTO {
     private String name;
 
     private List<RestaurantFoodItemDTO> items;
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<RestaurantFoodItemDTO> getItems() {
+        return items;
+    }
+
+    public void setItems(List<RestaurantFoodItemDTO> items) {
+        this.items = items;
+    }
 }
