@@ -22,7 +22,3 @@ That is not a real one business application. Its demonstration.
 
 Below is an explanation of the high level architecture of the food delivery with hook/async communications.
 ![food-delivery-communication-architecture.png](FoodDelivery-all/public/food-delivery-communication-architecture.png)
-
-
-## Simple demo
-![demo-preview.gif](FoodDelivery-all/public/demo-preview.gif)
